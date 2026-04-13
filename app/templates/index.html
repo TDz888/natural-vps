@@ -5,574 +5,377 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Natural VPS | Cinematic Nature 4K</title>
     
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Styles -->
     <link rel="stylesheet" href="/static/css/style.css">
     
     <style>
-        /* Additional inline styles for completeness */
-        .main-app {
+        /* Progress Container - REAL */
+        .progress-container {
+            margin-top: 25px;
             display: none;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 24px;
-            position: relative;
-            z-index: 10;
+            animation: slideDown 0.4s ease;
         }
-        
-        .main-app.visible {
-            display: block;
-        }
-        
-        /* Video Background */
-        .video-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.4;
-            z-index: -2;
-            pointer-events: none;
-        }
-        
-        .video-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at 30% 40%, transparent 0%, rgba(10, 30, 15, 0.6) 100%);
-            z-index: -1;
-            pointer-events: none;
-        }
-        
-        /* Animated Leaves */
-        .leaf {
-            position: fixed;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.15;
-            font-size: 24px;
-            animation: floatLeaf 15s infinite ease-in-out;
-        }
-        
-        @keyframes floatLeaf {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-30px) rotate(5deg); }
-            50% { transform: translateY(-50px) rotate(-5deg); }
-            75% { transform: translateY(-20px) rotate(3deg); }
-        }
-        
-        /* Sunrays */
-        .sunrays {
-            position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 40%, rgba(255, 215, 150, 0.08) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: -1;
-            animation: sunMove 30s infinite alternate ease-in-out;
-        }
-        
-        @keyframes sunMove {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(5%, 5%) rotate(5deg); }
-        }
-        
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 30px 30px;
-            background: rgba(30, 50, 35, 0.35);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(140, 180, 120, 0.2);
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 20, 10, 0.3);
-            position: relative;
-            overflow: hidden;
-            animation: fadeInDown 0.8s ease;
-        }
-        
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-15px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
-        .header::before {
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            gap: 5px;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            font-size: 0.55rem;
+            opacity: 0.4;
+            padding: 8px 3px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-step i {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .progress-step.active {
+            opacity: 1;
+            color: #8fbc6a;
+            background: rgba(107, 142, 78, 0.15);
+            animation: gentlePulse 1.5s infinite;
+        }
+
+        .progress-step.completed {
+            opacity: 1;
+            color: #5b9aa0;
+            background: rgba(91, 154, 160, 0.1);
+        }
+
+        .progress-step.failed {
+            opacity: 1;
+            color: #c06060;
+            background: rgba(192, 96, 96, 0.1);
+        }
+
+        @keyframes gentlePulse {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 1; }
+        }
+
+        .progress-bar {
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            height: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #2d5a3f, #6b8e4e, #8fbc6a);
+            width: 0%;
+            height: 100%;
+            transition: width 0.5s ease;
+            position: relative;
+            border-radius: 20px;
+        }
+
+        .progress-fill::after {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #6b8e4e, #8fbc6a, #5b9aa0, transparent);
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 2s infinite;
         }
-        
-        .logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, #e8e4d9, #c4beb0, #a8d8a8);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: 4px;
-            animation: gentleGlow 4s infinite;
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
-        
-        @keyframes gentleGlow {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.1); }
-        }
-        
-        .subtitle {
-            color: #c4beb0;
-            font-size: 0.9rem;
+
+        .progress-detail {
+            display: flex;
+            justify-content: space-between;
             margin-top: 10px;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            font-weight: 300;
-        }
-        
-        /* Tech Specs */
-        .specs-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 16px;
-            margin-bottom: 30px;
-        }
-        
-        .spec-card {
-            background: rgba(30, 50, 35, 0.35);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(140, 180, 120, 0.2);
-            border-radius: 18px;
-            padding: 20px 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: default;
-            animation: fadeInUp 0.6s ease backwards;
-        }
-        
-        .spec-card:nth-child(1) { animation-delay: 0.1s; }
-        .spec-card:nth-child(2) { animation-delay: 0.2s; }
-        .spec-card:nth-child(3) { animation-delay: 0.3s; }
-        .spec-card:nth-child(4) { animation-delay: 0.4s; }
-        .spec-card:nth-child(5) { animation-delay: 0.5s; }
-        .spec-card:nth-child(6) { animation-delay: 0.6s; }
-        
-        .spec-card:hover {
-            transform: translateY(-5px);
-            border-color: #6b8e4e;
-            box-shadow: 0 10px 30px rgba(60, 100, 60, 0.15);
-            background: rgba(50, 80, 60, 0.4);
-        }
-        
-        .spec-icon {
-            font-size: 2rem;
-            color: #8fbc6a;
-            margin-bottom: 10px;
-            transition: all 0.15s ease;
-        }
-        
-        .spec-card:hover .spec-icon {
-            transform: scale(1.1);
-            color: #5b9aa0;
-        }
-        
-        .spec-value {
-            font-size: 1.1rem;
-            font-weight: 600;
-            font-family: 'Cormorant Garamond', serif;
-            color: #e8e4d9;
-        }
-        
-        .spec-label {
-            font-size: 0.7rem;
-            color: #9a9486;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 5px;
-        }
-        
-        /* Two Columns */
-        .two-columns {
-            display: grid;
-            grid-template-columns: 1fr 1.3fr;
-            gap: 25px;
-        }
-        
-        /* Cards */
-        .card {
-            background: rgba(30, 50, 35, 0.35);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(140, 180, 120, 0.2);
-            border-radius: 24px;
-            padding: 28px;
-            box-shadow: 0 20px 40px rgba(0, 20, 10, 0.3);
-            transition: all 0.3s ease;
-            animation: fadeInUp 0.6s ease 0.2s backwards;
-        }
-        
-        .card:hover {
-            border-color: rgba(140, 180, 120, 0.4);
-            box-shadow: 0 10px 30px rgba(60, 100, 60, 0.15);
-        }
-        
-        .card-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            font-weight: 500;
-            margin-bottom: 25px;
-            color: #e8e4d9;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-bottom: 1px solid rgba(140, 180, 120, 0.2);
-            padding-bottom: 15px;
-        }
-        
-        .card-title i {
-            color: #6b8e4e;
-            font-size: 1.3rem;
-        }
-        
-        /* OS Selector */
-        .os-selector {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .os-option {
-            flex: 1;
-            background: rgba(20, 40, 25, 0.4);
-            border: 2px solid rgba(140, 180, 120, 0.2);
-            border-radius: 18px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .os-option i {
-            font-size: 2.5rem;
-            margin-bottom: 8px;
-            display: block;
-        }
-        
-        .os-option.active {
-            border-color: #6b8e4e;
-            background: rgba(107, 142, 78, 0.15);
-            box-shadow: 0 10px 30px rgba(60, 100, 60, 0.15);
-        }
-        
-        .os-option:hover {
-            border-color: #8fbc6a;
-            transform: translateY(-2px);
-        }
-        
-        /* Form Elements */
-        .input-group {
-            margin-bottom: 20px;
-        }
-        
-        .input-label {
-            display: block;
             font-size: 0.75rem;
-            color: #c4beb0;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
         }
-        
-        .input-field {
-            width: 100%;
-            background: rgba(20, 40, 25, 0.5);
-            border: 1px solid rgba(140, 180, 120, 0.2);
-            border-radius: 12px;
-            padding: 14px 16px;
-            color: #e8e4d9;
-            font-size: 0.9rem;
-            font-family: 'Montserrat', sans-serif;
-            transition: all 0.15s ease;
-        }
-        
-        .input-field:focus {
-            outline: none;
-            border-color: #6b8e4e;
-            box-shadow: 0 0 0 3px rgba(107, 142, 78, 0.2);
-            background: rgba(30, 60, 40, 0.6);
-        }
-        
-        .input-field::placeholder {
-            color: #9a9486;
-            opacity: 0.5;
-        }
-        
-        .input-row {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-        
-        .input-row .input-group {
-            flex: 1;
-            margin-bottom: 0;
-        }
-        
-        .random-btn {
-            background: rgba(107, 142, 78, 0.15);
-            border: 1px solid rgba(140, 180, 120, 0.2);
-            border-radius: 12px;
-            padding: 14px 18px;
+
+        .progress-message {
             color: #8fbc6a;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
-            white-space: nowrap;
+            gap: 6px;
         }
-        
-        .random-btn:hover {
-            background: rgba(107, 142, 78, 0.25);
-            transform: translateY(-2px);
-            border-color: #6b8e4e;
+
+        .progress-percent {
+            color: #c4beb0;
         }
-        
-        /* Buttons */
-        .btn {
-            padding: 15px 24px;
-            border-radius: 12px;
-            font-weight: 500;
-            font-size: 0.9rem;
+
+        /* VM Item - Clickable */
+        .vm-item {
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            display: inline-flex;
+        }
+
+        /* Modal - VM Details */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(5, 15, 10, 0.9);
+            backdrop-filter: blur(8px);
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            width: 100%;
-            margin-top: 15px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #2d5a3f, #4a7c59);
-            color: #e8e4d9;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 25px rgba(0, 30, 10, 0.3);
-        }
-        
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
-            transform: translate(-50%, -50%);
-            transition: width 0.5s, height 0.5s;
-        }
-        
-        .btn-primary:hover:not(:disabled)::before {
-            width: 300px;
-            height: 300px;
-        }
-        
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(0, 40, 15, 0.4);
-        }
-        
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        
-        /* VM List */
-        .vm-list {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            max-height: 450px;
-            overflow-y: auto;
-            padding-right: 8px;
-        }
-        
-        .vm-item {
-            background: rgba(20, 40, 25, 0.4);
-            border-radius: 18px;
-            border: 1px solid rgba(140, 180, 120, 0.2);
-            overflow: hidden;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
             transition: all 0.3s ease;
-            animation: fadeInItem 0.4s ease;
-            backdrop-filter: blur(5px);
-            cursor: pointer;
         }
-        
-        @keyframes fadeInItem {
-            from { opacity: 0; transform: translateX(-15px); }
-            to { opacity: 1; transform: translateX(0); }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
         }
-        
-        .vm-item:hover {
-            border-color: #6b8e4e;
-            background: rgba(40, 70, 50, 0.5);
-            transform: translateX(5px);
-            box-shadow: 0 10px 30px rgba(60, 100, 60, 0.15);
+
+        .modal {
+            background: linear-gradient(135deg, rgba(20, 40, 30, 0.98), rgba(15, 30, 20, 0.98));
+            border: 1px solid rgba(140, 180, 120, 0.2);
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0, 20, 10, 0.3);
         }
-        
-        .vm-header {
+
+        .modal-overlay.show .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 20px;
-        }
-        
-        .vm-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .vm-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, rgba(107, 142, 78, 0.2), rgba(91, 154, 160, 0.2));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(140, 180, 120, 0.2);
-            transition: all 0.15s ease;
-        }
-        
-        .vm-item:hover .vm-icon {
-            transform: scale(1.05) rotate(3deg);
-        }
-        
-        .vm-icon i {
-            font-size: 1.3rem;
-            color: #8fbc6a;
-        }
-        
-        .vm-name {
-            font-weight: 500;
-            font-size: 1rem;
-            font-family: 'Cormorant Garamond', serif;
-            color: #e8e4d9;
-        }
-        
-        .vm-os {
-            font-size: 0.65rem;
-            color: #9a9486;
-            margin-top: 3px;
-            text-transform: uppercase;
-        }
-        
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 50px 30px;
-            color: #9a9486;
-        }
-        
-        .empty-icon {
-            font-size: 4rem;
             margin-bottom: 20px;
-            opacity: 0.5;
-            color: #6b8e4e;
-            animation: floatLeaf 4s infinite ease-in-out;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(140, 180, 120, 0.2);
         }
-        
-        /* User Menu */
-        .user-menu {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
+
+        .modal-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            color: #e8e4d9;
             display: flex;
             align-items: center;
-            gap: 15px;
-            background: rgba(30, 50, 35, 0.35);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(140, 180, 120, 0.2);
-            border-radius: 50px;
-            padding: 8px 16px 8px 20px;
+            gap: 10px;
         }
-        
-        .user-avatar {
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #9a9486;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
             width: 35px;
             height: 35px;
-            background: linear-gradient(135deg, #4a7c59, #6b8e4e);
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: 600;
+            border-radius: 50%;
         }
-        
-        .user-name {
-            color: #e8e4d9;
-            font-size: 0.9rem;
-        }
-        
-        .btn-logout {
+
+        .modal-close:hover {
             background: rgba(192, 96, 96, 0.15);
-            border: 1px solid rgba(192, 96, 96, 0.3);
-            border-radius: 50px;
-            padding: 8px 16px;
             color: #c06060;
+            transform: rotate(90deg);
+        }
+
+        .vm-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .vm-status-badge.live {
+            background: rgba(90, 138, 62, 0.15);
+            color: #8fcc6a;
+        }
+
+        .vm-status-badge.die {
+            background: rgba(192, 96, 96, 0.15);
+            color: #e08080;
+        }
+
+        .vm-status-badge.creating {
+            background: rgba(180, 150, 30, 0.15);
+            color: #e8d060;
+        }
+
+        .info-section {
+            margin-bottom: 25px;
+        }
+
+        .info-section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #8fbc6a;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(140, 180, 120, 0.2);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            color: #9a9486;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-value {
+            font-family: 'Montserrat', monospace;
+            font-size: 0.85rem;
+            color: #e8e4d9;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .copy-btn {
+            background: rgba(107, 142, 78, 0.1);
+            border: 1px solid rgba(140, 180, 120, 0.2);
+            color: #8fbc6a;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(107, 142, 78, 0.25);
+            border-color: #6b8e4e;
+        }
+
+        .copy-btn.copied {
+            background: #5b9aa0;
+            color: white;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 0.8rem;
+            border: 1px solid rgba(140, 180, 120, 0.2);
+            background: rgba(20, 40, 25, 0.5);
+            color: #e8e4d9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
         }
-        
-        .btn-logout:hover {
-            background: rgba(192, 96, 96, 0.25);
+
+        .modal-btn:hover {
+            background: rgba(107, 142, 78, 0.2);
+            border-color: #6b8e4e;
+            transform: translateY(-2px);
         }
-        
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .specs-grid { grid-template-columns: repeat(3, 1fr); }
+
+        .modal-btn.delete:hover {
+            background: rgba(192, 96, 96, 0.15);
+            border-color: #c06060;
+            color: #c06060;
         }
-        
-        @media (max-width: 1000px) {
-            .two-columns { grid-template-columns: 1fr; }
+
+        /* Countdown in modal */
+        .countdown-timer {
+            font-family: 'Montserrat', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 50px;
         }
-        
-        @media (max-width: 640px) {
-            .specs-grid { grid-template-columns: repeat(2, 1fr); }
-            .main-app { padding: 12px; }
-            .card { padding: 18px; }
-            .logo { font-size: 2rem; }
+
+        .countdown-timer.normal {
+            background: rgba(90, 138, 62, 0.15);
+            color: #8fcc6a;
+        }
+
+        .countdown-timer.warning {
+            background: rgba(180, 150, 30, 0.15);
+            color: #e8d060;
+            animation: gentlePulse 1s infinite;
+        }
+
+        .countdown-timer.danger {
+            background: rgba(192, 96, 96, 0.15);
+            color: #e08080;
+            animation: gentlePulse 0.8s infinite;
+        }
+
+        /* Refresh button animation */
+        .fa-spin {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <!-- Video Background -->
     <video class="video-background" autoplay loop muted playsinline>
-        <source src="https://cdn.pixabay.com/video/2024/01/04/195364-899758535_large.mp4" type="video/mp4">
+        <source src="https://cdn.pixabay.com/video/2023/09/23/182060-867837001_large.mp4" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
     
@@ -583,6 +386,27 @@
     <div class="leaf" style="bottom: 40%; right: 20%; animation-delay: 6s;">🌱</div>
     <div class="sunrays"></div>
     
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- Modal VM Details -->
+    <div class="modal-overlay" id="vmModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="modalVmName">
+                    <i class="fas fa-leaf"></i> 
+                    <span>natural-vm</span>
+                </div>
+                <button class="modal-close" onclick="closeVmModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalVmBody">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
     <!-- Auth Container -->
     <div class="auth-container">
         <div class="auth-card">
@@ -600,7 +424,6 @@
                 </button>
             </div>
             
-            <!-- Login Form -->
             <form id="loginForm" class="auth-form active">
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-user"></i> Username</label>
@@ -619,7 +442,6 @@
                 </button>
             </form>
             
-            <!-- Register Form -->
             <form id="registerForm" class="auth-form">
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-user"></i> Username</label>
@@ -755,6 +577,28 @@
                         </button>
                     </div>
                     
+                    <!-- Progress Container - REAL -->
+                    <div class="progress-container" id="createProgressContainer">
+                        <div class="progress-steps" id="createProgressSteps">
+                            <div class="progress-step" data-step="0"><i class="fas fa-key"></i> Validate</div>
+                            <div class="progress-step" data-step="1"><i class="fas fa-code-branch"></i> Repo</div>
+                            <div class="progress-step" data-step="2"><i class="fas fa-file-code"></i> Workflow</div>
+                            <div class="progress-step" data-step="3"><i class="fas fa-rocket"></i> Trigger</div>
+                            <div class="progress-step" data-step="4"><i class="fas fa-hourglass"></i> Boot</div>
+                            <div class="progress-step" data-step="5"><i class="fas fa-check-circle"></i> Ready</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="createProgressFill"></div>
+                        </div>
+                        <div class="progress-detail">
+                            <span class="progress-message" id="createProgressMessage">
+                                <i class="fas fa-spinner fa-pulse"></i>
+                                <span>Ready to plant</span>
+                            </span>
+                            <span class="progress-percent" id="createProgressPercent">0%</span>
+                        </div>
+                    </div>
+                    
                     <button class="btn btn-primary" id="createBtn">
                         <i class="fas fa-seedling"></i> Grow New VM
                     </button>
@@ -792,7 +636,497 @@
         </div>
     </div>
 
-    <!-- JavaScript -->
     <script src="/static/js/app.js"></script>
+    <script>
+        // ============================================
+        // EXTENDED JAVASCRIPT - MODAL & PROGRESS
+        // ============================================
+        
+        let vms = [];
+        let currentUser = null;
+        let selectedOS = 'ubuntu';
+        let progressInterval = null;
+        let currentCreatingVmId = null;
+        
+        // ============================================
+        // VM MODAL FUNCTIONS
+        // ============================================
+        
+        async function showVmModal(vmId) {
+            const vm = vms.find(v => v.id === vmId);
+            if (!vm) return;
+            
+            // Cập nhật modal title
+            document.getElementById('modalVmName').innerHTML = `
+                <i class="fas fa-leaf"></i> 
+                <span>${vm.name || vmId}</span>
+            `;
+            
+            // Kiểm tra trạng thái live/die
+            let isLive = false;
+            let checkResult = null;
+            
+            try {
+                const res = await fetch(`${API_BASE}/api/vps/${vmId}/check`);
+                const data = await res.json();
+                if (data.success) {
+                    isLive = data.is_live;
+                    checkResult = data;
+                }
+            } catch (e) {
+                console.error('Check VM status error:', e);
+            }
+            
+            // Format thời gian
+            const created = new Date(vm.createdAt).toLocaleString();
+            const expires = new Date(vm.expiresAt).toLocaleString();
+            const remaining = formatCountdown(vm.expiresAt);
+            const countdownClass = getCountdownClass(vm.expiresAt);
+            
+            // Status badge
+            let statusBadge = '';
+            if (vm.status === 'creating') {
+                statusBadge = '<span class="vm-status-badge creating"><i class="fas fa-spinner fa-pulse"></i> Creating</span>';
+            } else if (isLive) {
+                statusBadge = '<span class="vm-status-badge live"><i class="fas fa-circle"></i> Live</span>';
+            } else {
+                statusBadge = '<span class="vm-status-badge die"><i class="fas fa-circle"></i> Offline</span>';
+            }
+            
+            // Build modal content
+            let html = `
+                <div style="margin-bottom: 20px;">
+                    ${statusBadge}
+                    <span class="countdown-timer ${countdownClass}" style="margin-left: 10px;">
+                        <i class="fas fa-hourglass-half"></i> ${remaining}
+                    </span>
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-section-title"><i class="fas fa-info-circle"></i> General Information</div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-tag"></i> VM Name</span>
+                        <span class="info-value">${vm.name}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-microchip"></i> Operating System</span>
+                        <span class="info-value">
+                            <i class="fab fa-${vm.osType === 'ubuntu' ? 'ubuntu' : 'windows'}" style="color: ${vm.osType === 'ubuntu' ? '#dd4814' : '#00a4ef'};"></i>
+                            ${vm.osType === 'ubuntu' ? 'Ubuntu 22.04 LTS' : 'Windows Server 2022'}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-section-title"><i class="fas fa-key"></i> Credentials</div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-user"></i> Username</span>
+                        <span class="info-value">
+                            ${vm.username}
+                            <button class="copy-btn" onclick="copyText('${vm.username}', this)"><i class="fas fa-copy"></i></button>
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-lock"></i> Password</span>
+                        <span class="info-value">
+                            ${vm.password}
+                            <button class="copy-btn" onclick="copyText('${vm.password}', this)"><i class="fas fa-copy"></i></button>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-section-title"><i class="fas fa-network-wired"></i> Connection</div>
+            `;
+            
+            if (vm.osType === 'ubuntu') {
+                html += `
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-terminal"></i> SSH Command</span>
+                        <span class="info-value">
+                            ${vm.sshCommand || 'Pending...'}
+                            ${vm.sshCommand ? `<button class="copy-btn" onclick="copyText('${vm.sshCommand}', this)"><i class="fas fa-copy"></i></button>` : ''}
+                        </span>
+                    </div>
+                `;
+            }
+            
+            html += `
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-ip"></i> Tailscale IP</span>
+                        <span class="info-value">
+                            ${vm.tailscaleIP || 'Pending...'}
+                            ${vm.tailscaleIP ? `<button class="copy-btn" onclick="copyText('${vm.tailscaleIP}', this)"><i class="fas fa-copy"></i></button>` : ''}
+                        </span>
+                    </div>
+            `;
+            
+            if (vm.cloudflareUrl) {
+                html += `
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-cloud"></i> Cloudflare VNC</span>
+                        <span class="info-value">
+                            <a href="${vm.cloudflareUrl}" target="_blank" style="color: #8fbc6a;">Open VNC</a>
+                            <button class="copy-btn" onclick="copyText('${vm.cloudflareUrl}', this)"><i class="fas fa-copy"></i></button>
+                        </span>
+                    </div>
+                `;
+            }
+            
+            if (vm.novncUrl) {
+                html += `
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-desktop"></i> noVNC Direct</span>
+                        <span class="info-value">
+                            <a href="${vm.novncUrl}" target="_blank" style="color: #8fbc6a;">Open</a>
+                        </span>
+                    </div>
+                `;
+            }
+            
+            html += `
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-section-title"><i class="fas fa-clock"></i> Timeline</div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="far fa-calendar-plus"></i> Created</span>
+                        <span class="info-value">${created}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="far fa-calendar-times"></i> Expires</span>
+                        <span class="info-value">${expires}</span>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="modal-btn" onclick="copyAllInfo('${vm.id}')">
+                        <i class="fas fa-copy"></i> Copy All
+                    </button>
+                    ${vm.repoUrl ? `
+                        <a href="${vm.repoUrl}" target="_blank" class="modal-btn">
+                            <i class="fab fa-github"></i> Repository
+                        </a>
+                    ` : ''}
+                    ${vm.workflowUrl ? `
+                        <a href="${vm.workflowUrl}" target="_blank" class="modal-btn">
+                            <i class="fas fa-code-branch"></i> Workflow
+                        </a>
+                    ` : ''}
+                    <button class="modal-btn delete" onclick="deleteVMFromModal('${vm.id}')">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('modalVmBody').innerHTML = html;
+            document.getElementById('vmModal').classList.add('show');
+        }
+        
+        function closeVmModal() {
+            document.getElementById('vmModal').classList.remove('show');
+        }
+        
+        async function copyText(text, btn) {
+            try {
+                await navigator.clipboard.writeText(text);
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.classList.remove('copied');
+                }, 1500);
+            } catch (e) {
+                showToast('Copy failed', 'error');
+            }
+        }
+        
+        function copyAllInfo(vmId) {
+            const vm = vms.find(v => v.id === vmId);
+            if (!vm) return;
+            
+            const info = `
+Natural VPS - ${vm.name}
+========================
+OS: ${vm.osType === 'ubuntu' ? 'Ubuntu 22.04' : 'Windows Server'}
+Username: ${vm.username}
+Password: ${vm.password}
+Tailscale IP: ${vm.tailscaleIP || 'N/A'}
+${vm.osType === 'ubuntu' ? `SSH: ${vm.sshCommand || 'N/A'}` : `VNC: ${vm.cloudflareUrl || 'N/A'}`}
+Repository: ${vm.repoUrl || 'N/A'}
+Created: ${vm.createdAt}
+Expires: ${vm.expiresAt}
+Status: ${vm.status}
+            `.trim();
+            
+            navigator.clipboard.writeText(info);
+            showToast('✅ All information copied!', 'success');
+            closeVmModal();
+        }
+        
+        function deleteVMFromModal(vmId) {
+            if (confirm('Are you sure you want to delete this VM?')) {
+                deleteVM(vmId);
+                closeVmModal();
+            }
+        }
+        
+        // ============================================
+        // PROGRESS TRACKING
+        // ============================================
+        
+        function startProgressTracking(vmId) {
+            currentCreatingVmId = vmId;
+            
+            // Reset progress UI
+            updateProgressUI(0, 5, '🔐 Starting VM creation...');
+            
+            // Clear existing interval
+            if (progressInterval) {
+                clearInterval(progressInterval);
+            }
+            
+            // Poll progress every 2 seconds
+            progressInterval = setInterval(async () => {
+                try {
+                    const res = await fetch(`${API_BASE}/api/vps/${vmId}/progress`);
+                    const data = await res.json();
+                    
+                    if (data.success) {
+                        const progress = data.progress;
+                        const vm = data.vm;
+                        
+                        // Update progress UI
+                        updateProgressUI(
+                            progress.step,
+                            progress.percent,
+                            progress.message
+                        );
+                        
+                        // Update step classes based on status
+                        if (progress.status === 'completed') {
+                            clearInterval(progressInterval);
+                            progressInterval = null;
+                            currentCreatingVmId = null;
+                            
+                            // Refresh VM list
+                            loadVMs();
+                            loadStats();
+                            
+                            // Hide progress after 3 seconds
+                            setTimeout(() => {
+                                document.getElementById('createProgressContainer').style.display = 'none';
+                            }, 3000);
+                        } else if (progress.status === 'failed') {
+                            clearInterval(progressInterval);
+                            progressInterval = null;
+                            currentCreatingVmId = null;
+                            
+                            // Mark step as failed
+                            markStepFailed(progress.step);
+                            
+                            // Hide progress after 5 seconds
+                            setTimeout(() => {
+                                document.getElementById('createProgressContainer').style.display = 'none';
+                            }, 5000);
+                        }
+                        
+                        // Update VM status if completed
+                        if (vm.status === 'running') {
+                            clearInterval(progressInterval);
+                            progressInterval = null;
+                            currentCreatingVmId = null;
+                        }
+                    }
+                } catch (e) {
+                    console.error('Progress check error:', e);
+                }
+            }, 2000);
+        }
+        
+        function updateProgressUI(step, percent, message) {
+            const fill = document.getElementById('createProgressFill');
+            const messageEl = document.getElementById('createProgressMessage').querySelector('span');
+            const percentEl = document.getElementById('createProgressPercent');
+            
+            fill.style.width = percent + '%';
+            messageEl.textContent = message;
+            percentEl.textContent = percent + '%';
+            
+            // Update steps
+            const steps = document.querySelectorAll('.progress-step');
+            steps.forEach((s, index) => {
+                s.classList.remove('active', 'completed');
+                if (index < step) {
+                    s.classList.add('completed');
+                } else if (index === step) {
+                    s.classList.add('active');
+                }
+            });
+        }
+        
+        function markStepFailed(step) {
+            const steps = document.querySelectorAll('.progress-step');
+            if (steps[step]) {
+                steps[step].classList.remove('active');
+                steps[step].classList.add('failed');
+            }
+            
+            const messageEl = document.getElementById('createProgressMessage').querySelector('span');
+            messageEl.innerHTML = '❌ Creation failed';
+            messageEl.style.color = '#c06060';
+        }
+        
+        // ============================================
+        // CREATE VM (UPDATED)
+        // ============================================
+        
+        async function createVM() {
+            const githubToken = document.getElementById('githubToken').value.trim();
+            const tailscaleKey = document.getElementById('tailscaleKey').value.trim();
+            let username = document.getElementById('vmUsername').value.trim();
+            let password = document.getElementById('vmPassword').value;
+            
+            if (!githubToken) {
+                showToast('GitHub Token is required', 'error');
+                return;
+            }
+            
+            if (!tailscaleKey) {
+                showToast('Tailscale Key is required', 'error');
+                return;
+            }
+            
+            if (!username) {
+                username = generateUsername();
+                document.getElementById('vmUsername').value = username;
+            }
+            
+            if (!password) {
+                password = generatePassword();
+                document.getElementById('vmPassword').value = password;
+            }
+            
+            const btn = document.getElementById('createBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Planting...';
+            
+            // Show progress container
+            const progressContainer = document.getElementById('createProgressContainer');
+            progressContainer.style.display = 'block';
+            
+            // Reset progress UI
+            updateProgressUI(0, 2, '🔐 Initializing...');
+            
+            try {
+                const res = await fetch(`${API_BASE}/api/vps`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        githubToken,
+                        tailscaleKey,
+                        osType: selectedOS,
+                        vmUsername: username,
+                        vmPassword: password
+                    })
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    showToast(`🌱 VM "${data.name}" is growing!`, 'success');
+                    
+                    // Clear sensitive fields
+                    document.getElementById('githubToken').value = '';
+                    document.getElementById('tailscaleKey').value = '';
+                    document.getElementById('vmUsername').value = generateUsername();
+                    document.getElementById('vmPassword').value = generatePassword();
+                    
+                    // Add to list
+                    vms.unshift(data);
+                    renderVMList(vms);
+                    
+                    // Start progress tracking
+                    startProgressTracking(data.id);
+                    
+                } else {
+                    showToast(data.error, 'error');
+                    progressContainer.style.display = 'none';
+                }
+            } catch (e) {
+                showToast('Connection error', 'error');
+                progressContainer.style.display = 'none';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-seedling"></i> Grow New VM';
+            }
+        }
+        
+        // ============================================
+        // RENDER VM LIST (UPDATED)
+        // ============================================
+        
+        function renderVMList(vmArray) {
+            const container = document.getElementById('vmList');
+            
+            if (!vmArray || vmArray.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon"><i class="fas fa-seedling"></i></div>
+                        <div>Your virtual forest is empty</div>
+                        <div style="font-size: 0.8rem; margin-top: 10px;">Plant your first VM to begin</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = vmArray.map(vm => `
+                <div class="vm-item" onclick="showVmModal('${vm.id}')">
+                    <div class="vm-header">
+                        <div class="vm-info">
+                            <div class="vm-icon">
+                                <i class="fab fa-${vm.osType === 'ubuntu' ? 'ubuntu' : 'windows'}"></i>
+                            </div>
+                            <div>
+                                <div class="vm-name">${vm.name || vm.id}</div>
+                                <div class="vm-os">
+                                    <span style="color: ${vm.status === 'running' ? '#8fbc6a' : (vm.status === 'creating' ? '#e8d060' : '#9a9486')};">●</span>
+                                    ${vm.status} • ${formatRelativeTime(vm.createdAt)}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <i class="fas fa-chevron-right" style="color: #6b8e4e;"></i>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // ============================================
+        // EVENT LISTENERS (ADDITIONAL)
+        // ============================================
+        
+        document.getElementById('vmModal').addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) {
+                closeVmModal();
+            }
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeVmModal();
+            }
+        });
+        
+        // Expose functions to global
+        window.showVmModal = showVmModal;
+        window.closeVmModal = closeVmModal;
+        window.copyText = copyText;
+        window.copyAllInfo = copyAllInfo;
+        window.deleteVMFromModal = deleteVMFromModal;
+        window.selectOS = selectOS;
+    </script>
 </body>
 </html>
