@@ -1,4 +1,4 @@
-```markdown
+
 <div align="center">
   <img src="https://images.pexels.com/photos/957024/forest-trees-perspective-bare-trees-957024.jpg" alt="Natural VPS Banner" width="100%" style="border-radius: 20px; opacity: 0.8;" />
   
@@ -99,7 +99,7 @@ The VM will begin provisioning. After 15-30 seconds, it will appear in your **Vi
 # Copy the SSH command from VM details and paste in terminal
 ssh username@100.x.x.x
 # Enter the password when prompted
-```
+
 
 Windows (Remote Desktop)
 
