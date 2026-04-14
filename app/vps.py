@@ -1,5 +1,6 @@
 """
 Natural VPS - VPS Management Routes
+API Endpoint: http://34.10.118.99:5000
 """
 
 import uuid
@@ -344,3 +345,57 @@ def get_stats():
         'creating': row['creating'] if row else 0,
         'failed': row['failed'] if row else 0
     }})
+
+@vps_bp.route('/rate-limit', methods=['GET'])
+@require_auth
+def get_rate_limit_status():
+    """Lấy trạng thái rate limit của user hiện tại"""
+    ip = get_client_ip()
+    ip_hash = hash_ip(ip)
+    
+    row = db.fetchone(
+        "SELECT count, window_start FROM rate_limits WHERE ip_hash = ?",
+        (ip_hash,)
+    )
+    
+    limit = Config.RATE_LIMIT_COUNT
+    window_hours = Config.RATE_LIMIT_WINDOW // 3600
+    
+    if not row:
+        return jsonify({
+            'success': True,
+            'rate_limit': {
+                'used': 0,
+                'limit': limit,
+                'remaining': limit,
+                'window_hours': window_hours,
+                'reset_at': None,
+                'seconds_remaining': 0
+            }
+        })
+    
+    used = row['count']
+    remaining = max(0, limit - used)
+    reset_at = row['window_start']
+    
+    seconds_remaining = 0
+    if reset_at:
+        reset_time = datetime.fromisoformat(reset_at) + timedelta(seconds=Config.RATE_LIMIT_WINDOW)
+        now = datetime.now()
+        if now < reset_time:
+            seconds_remaining = (reset_time - now).seconds
+        else:
+            remaining = limit
+            used = 0
+    
+    return jsonify({
+        'success': True,
+        'rate_limit': {
+            'used': used,
+            'limit': limit,
+            'remaining': remaining,
+            'window_hours': window_hours,
+            'reset_at': reset_at,
+            'seconds_remaining': seconds_remaining
+        }
+    })
