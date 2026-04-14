@@ -1,7 +1,7 @@
 /* ============================================ */
 /* NATURAL VPS - MAIN STYLESHEET                */
 /* Cinematic Nature 4K Theme                    */
-/* Version: 2.0 - Chill Edition                 */
+/* Version: 3.0.0                               */
 /* ============================================ */
 
 /* ----- CSS RESET ----- */
@@ -127,10 +127,10 @@ body {
 }
 
 /* ============================================ */
-/* 🌿 NATURAL EFFECTS - BACKGROUND               */
+/* NATURAL EFFECTS - BACKGROUND                 */
 /* ============================================ */
 
-/* 1. Sương mù chuyển động */
+/* Sương mù chuyển động */
 .fog-layer {
     position: fixed;
     bottom: 0;
@@ -182,43 +182,7 @@ body {
     100% { transform: translateX(8%) scaleX(1.1); }
 }
 
-/* 2. Lá rơi theo gió */
-.leaf-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 7;
-    overflow: hidden;
-}
-
-.falling-leaf {
-    position: absolute;
-    color: rgba(100, 140, 80, 0.15);
-    font-size: 20px;
-    animation: leafFall linear infinite;
-}
-
-@keyframes leafFall {
-    0% {
-        transform: translateY(-10vh) translateX(-10vw) rotate(0deg);
-        opacity: 0;
-    }
-    10% {
-        opacity: 0.5;
-    }
-    90% {
-        opacity: 0.4;
-    }
-    100% {
-        transform: translateY(110vh) translateX(30vw) rotate(360deg);
-        opacity: 0;
-    }
-}
-
-/* 3. Đom đóm bay */
+/* Đom đóm bay */
 .firefly-container {
     position: fixed;
     top: 0;
@@ -244,7 +208,7 @@ body {
     100% { opacity: 0.9; box-shadow: 0 0 20px #ffeaa0, 0 0 40px rgba(255, 234, 160, 0.7); }
 }
 
-/* 4. Ánh nắng xuyên lá (God Rays) */
+/* Ánh nắng xuyên lá (God Rays) */
 .sunrays-layer {
     position: fixed;
     top: -50%;
@@ -266,7 +230,7 @@ body {
     100% { transform: translate(8%, 5%) rotate(8deg); }
 }
 
-/* 5. Mây trôi chậm */
+/* Mây trôi chậm */
 .clouds-layer {
     position: fixed;
     top: 0;
@@ -286,35 +250,16 @@ body {
     animation: cloudDrift linear infinite;
 }
 
-.cloud-1 {
-    width: 300px;
-    height: 80px;
-    top: 15%;
-    animation-duration: 60s;
-}
-
-.cloud-2 {
-    width: 400px;
-    height: 100px;
-    top: 45%;
-    animation-duration: 80s;
-    animation-delay: -20s;
-}
-
-.cloud-3 {
-    width: 250px;
-    height: 60px;
-    top: 70%;
-    animation-duration: 70s;
-    animation-delay: -40s;
-}
+.cloud-1 { width: 300px; height: 80px; top: 15%; animation-duration: 60s; }
+.cloud-2 { width: 400px; height: 100px; top: 45%; animation-duration: 80s; animation-delay: -20s; }
+.cloud-3 { width: 250px; height: 60px; top: 70%; animation-duration: 70s; animation-delay: -40s; }
 
 @keyframes cloudDrift {
     0% { left: -400px; }
     100% { left: 110%; }
 }
 
-/* 6. Chim bay ngang trời */
+/* Chim bay ngang trời */
 .bird-container {
     position: fixed;
     top: 0;
@@ -338,7 +283,7 @@ body {
     100% { left: 110%; transform: translateY(5px); }
 }
 
-/* 7. Sao băng (ban đêm) */
+/* Sao băng */
 .shooting-star {
     position: fixed;
     width: 2px;
@@ -374,10 +319,10 @@ body {
 }
 
 /* ============================================ */
-/* 🌿 INTERACTION EFFECTS                        */
+/* INTERACTION EFFECTS                          */
 /* ============================================ */
 
-/* 8. Ripple nước khi click */
+/* Ripple nước khi click */
 .btn, .random-btn, .os-option, .vm-item, .modal-btn {
     position: relative;
     overflow: hidden;
@@ -398,7 +343,7 @@ body {
     100% { transform: scale(20); opacity: 0; }
 }
 
-/* 9. Lá rung khi hover */
+/* Lá rung khi hover */
 .fa-leaf, .fa-seedling, .fa-tree, .fa-forest {
     transition: var(--transition-fast);
     display: inline-block;
@@ -417,17 +362,16 @@ body {
     75% { transform: rotate(-4deg); }
 }
 
-/* 10. Glow tự nhiên cho input */
+/* Glow tự nhiên cho input */
 .input-field:focus {
     outline: none;
     border-color: var(--green-leaf);
     box-shadow: 0 0 0 3px rgba(74, 138, 62, 0.15),
                 0 0 20px rgba(100, 170, 80, 0.2);
     background: rgba(15, 30, 20, 0.95);
-    transition: var(--transition);
 }
 
-/* 11. Card nở ra như hoa khi mở modal */
+/* Card nở ra như hoa khi mở modal */
 .modal {
     animation: flowerBloom 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
@@ -438,7 +382,7 @@ body {
     100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
-/* 12. Progress bar như dòng suối */
+/* Progress bar như dòng suối */
 .progress-fill {
     background: linear-gradient(90deg, 
         var(--green-dark) 0%, 
@@ -448,8 +392,6 @@ body {
         var(--green-moss) 100%);
     background-size: 200% 100%;
     animation: streamFlow 3s linear infinite;
-    position: relative;
-    overflow: hidden;
 }
 
 .progress-fill::before {
@@ -459,10 +401,7 @@ body {
     left: -100%;
     width: 50%;
     height: 100%;
-    background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.3), 
-        transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
     animation: sparkleFlow 2s ease-in-out infinite;
 }
 
@@ -476,7 +415,7 @@ body {
     100% { left: 150%; }
 }
 
-/* 13. Loading spinner thành bông hoa */
+/* Loading spinner thành bông hoa */
 .spinner {
     width: 20px;
     height: 20px;
@@ -492,13 +431,8 @@ body {
     font-size: 16px;
 }
 
-.spinner::before {
-    animation: petalPulse 1s ease-in-out infinite;
-}
-
-.spinner::after {
-    animation: petalPulse 1s ease-in-out infinite 0.5s;
-}
+.spinner::before { animation: petalPulse 1s ease-in-out infinite; }
+.spinner::after { animation: petalPulse 1s ease-in-out infinite 0.5s; }
 
 @keyframes flowerSpin {
     0% { transform: rotate(0deg); }
@@ -510,7 +444,7 @@ body {
     50% { opacity: 1; transform: scale(1.2); }
 }
 
-/* 14. Hiệu ứng hô hấp cho cây */
+/* Hiệu ứng hô hấp cho cây */
 @keyframes treeBreath {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.02); }
@@ -520,11 +454,7 @@ body {
     animation: treeBreath 4s ease-in-out infinite;
 }
 
-/* ============================================ */
-/* 🌿 ANIMATED ELEMENTS                          */
-/* ============================================ */
-
-/* 15. Toast mọc lên như cây */
+/* Toast mọc lên như cây */
 .toast {
     animation: plantGrow 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     transform-origin: bottom left;
@@ -536,16 +466,8 @@ body {
     100% { transform: translateX(0) scale(1); opacity: 1; }
 }
 
-/* 16. Parallax scrolling tự nhiên */
-.parallax-bg {
-    transition: transform 0.1s ease-out;
-}
-
-/* 17. VM item hover với hiệu ứng lá */
-.vm-item {
-    position: relative;
-}
-
+/* VM item hover với hiệu ứng lá */
+.vm-item { position: relative; }
 .vm-item::before {
     content: '🍃';
     position: absolute;
@@ -556,17 +478,10 @@ body {
     transition: var(--transition);
     font-size: 16px;
 }
+.vm-item:hover::before { opacity: 0.6; left: -5px; }
 
-.vm-item:hover::before {
-    opacity: 0.6;
-    left: -5px;
-}
-
-/* 18. Hoa nở khi hover card */
-.card {
-    position: relative;
-}
-
+/* Hoa nở khi hover card */
+.card { position: relative; }
 .card::after {
     content: '🌼';
     position: absolute;
@@ -577,13 +492,9 @@ body {
     transition: var(--transition);
     transform: scale(0);
 }
+.card:hover::after { opacity: 0.15; transform: scale(1); }
 
-.card:hover::after {
-    opacity: 0.15;
-    transform: scale(1);
-}
-
-/* 19. Status dot breathing */
+/* Status dot breathing */
 .vm-status-dot.running {
     animation: statusBreath 2s ease-in-out infinite;
 }
@@ -670,17 +581,9 @@ body {
     position: relative;
 }
 
-.auth-tab i {
-    margin-right: 6px;
-}
-
-.auth-tab:hover {
-    color: var(--text-secondary);
-}
-
-.auth-tab.active {
-    color: var(--green-moss);
-}
+.auth-tab i { margin-right: 6px; }
+.auth-tab:hover { color: var(--text-secondary); }
+.auth-tab.active { color: var(--green-moss); }
 
 .auth-tab.active::after {
     content: '';
@@ -692,23 +595,15 @@ body {
     background: linear-gradient(90deg, transparent, var(--green-moss), transparent);
 }
 
-.auth-form {
-    display: none;
-}
-
-.auth-form.active {
-    display: block;
-    animation: fadeIn 0.4s ease;
-}
+.auth-form { display: none; }
+.auth-form.active { display: block; animation: fadeIn 0.4s ease; }
 
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
-.form-group {
-    margin-bottom: 18px;
-}
+.form-group { margin-bottom: 18px; }
 
 .form-label {
     display: block;
@@ -719,10 +614,7 @@ body {
     letter-spacing: 1.5px;
 }
 
-.form-label i {
-    margin-right: 6px;
-    color: var(--green-moss);
-}
+.form-label i { margin-right: 6px; color: var(--green-moss); }
 
 .form-input {
     width: 100%;
@@ -743,10 +635,7 @@ body {
     background: rgba(15, 30, 20, 0.95);
 }
 
-.form-input::placeholder {
-    color: #8a9080;
-    opacity: 0.6;
-}
+.form-input::placeholder { color: #8a9080; opacity: 0.6; }
 
 .form-checkbox {
     display: flex;
@@ -774,10 +663,7 @@ body {
     font-size: 0.8rem;
 }
 
-.auth-footer i {
-    margin: 0 4px;
-    color: var(--green-moss);
-}
+.auth-footer i { margin: 0 4px; color: var(--green-moss); }
 
 /* ============================================ */
 /* MAIN APP STYLES                              */
@@ -789,9 +675,7 @@ body {
     z-index: 10;
 }
 
-.main-app.visible {
-    display: block;
-}
+.main-app.visible { display: block; }
 
 /* User Menu */
 .user-menu {
@@ -898,10 +782,7 @@ body {
     50% { filter: brightness(1.08); }
 }
 
-.logo i {
-    margin-right: 12px;
-    font-size: 2.5rem;
-}
+.logo i { margin-right: 12px; font-size: 2.5rem; }
 
 .subtitle {
     color: var(--text-secondary);
@@ -1014,15 +895,10 @@ body {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.card-title i {
-    color: var(--green-leaf);
-    font-size: 1.2rem;
-}
+.card-title i { color: var(--green-leaf); font-size: 1.2rem; }
 
 /* Form Elements */
-.input-group {
-    margin-bottom: 18px;
-}
+.input-group { margin-bottom: 18px; }
 
 .input-label {
     display: block;
@@ -1033,10 +909,7 @@ body {
     letter-spacing: 1.5px;
 }
 
-.input-label i {
-    margin-right: 6px;
-    color: var(--green-moss);
-}
+.input-label i { margin-right: 6px; color: var(--green-moss); }
 
 .input-field {
     width: 100%;
@@ -1057,10 +930,7 @@ body {
     background: rgba(15, 30, 20, 0.95);
 }
 
-.input-field::placeholder {
-    color: #8a9080;
-    opacity: 0.6;
-}
+.input-field::placeholder { color: #8a9080; opacity: 0.6; }
 
 .input-row {
     display: flex;
@@ -1068,10 +938,7 @@ body {
     align-items: center;
 }
 
-.input-row .input-group {
-    flex: 1;
-    margin-bottom: 0;
-}
+.input-row .input-group { flex: 1; margin-bottom: 0; }
 
 /* OS Selector */
 .os-selector {
@@ -1091,23 +958,9 @@ body {
     transition: var(--transition);
 }
 
-.os-option i {
-    font-size: 2.2rem;
-    margin-bottom: 6px;
-    display: block;
-}
-
-.os-option span {
-    display: block;
-    font-weight: 500;
-    font-size: 0.9rem;
-    margin-bottom: 3px;
-}
-
-.os-option small {
-    color: var(--text-muted);
-    font-size: 0.65rem;
-}
+.os-option i { font-size: 2.2rem; margin-bottom: 6px; display: block; }
+.os-option span { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 3px; }
+.os-option small { color: var(--text-muted); font-size: 0.65rem; }
 
 .os-option.active {
     border-color: var(--green-leaf);
@@ -1216,10 +1069,7 @@ body {
     border: 1px solid var(--glass-border);
 }
 
-.stat-item i {
-    color: var(--green-moss);
-    font-size: 1.1rem;
-}
+.stat-item i { color: var(--green-moss); font-size: 1.1rem; }
 
 .stat-content {
     display: flex;
@@ -1301,10 +1151,7 @@ body {
     transform: scale(1.05) rotate(3deg);
 }
 
-.vm-icon i {
-    font-size: 1.3rem;
-    color: var(--green-moss);
-}
+.vm-icon i { font-size: 1.3rem; color: var(--green-moss); }
 
 .vm-name {
     font-weight: 500;
@@ -1329,7 +1176,6 @@ body {
 .vm-status-dot.running {
     background: var(--green-moss);
     box-shadow: 0 0 8px var(--green-moss);
-    animation: statusBreath 1.5s infinite;
 }
 
 .vm-status-dot.creating {
@@ -1338,9 +1184,7 @@ body {
     animation: statusBreath 1s infinite;
 }
 
-.vm-status-dot.expired {
-    background: var(--text-muted);
-}
+.vm-status-dot.expired { background: var(--text-muted); }
 
 .vm-status-text {
     font-size: 0.6rem;
@@ -1348,10 +1192,7 @@ body {
     text-transform: uppercase;
 }
 
-.vm-time {
-    font-size: 0.6rem;
-    color: var(--text-muted);
-}
+.vm-time { font-size: 0.6rem; color: var(--text-muted); }
 
 .vm-arrow {
     color: var(--green-leaf);
@@ -1359,9 +1200,7 @@ body {
     transition: var(--transition-fast);
 }
 
-.vm-item:hover .vm-arrow {
-    transform: translateX(3px);
-}
+.vm-item:hover .vm-arrow { transform: translateX(3px); }
 
 /* Empty State */
 .empty-state {
@@ -1378,14 +1217,8 @@ body {
     animation: treeBreath 4s infinite ease-in-out;
 }
 
-.empty-state p {
-    margin-bottom: 5px;
-}
-
-.empty-state small {
-    font-size: 0.75rem;
-    opacity: 0.7;
-}
+.empty-state p { margin-bottom: 5px; }
+.empty-state small { font-size: 0.75rem; opacity: 0.7; }
 
 /* Progress Container */
 .progress-container {
@@ -1419,11 +1252,7 @@ body {
     letter-spacing: 0.5px;
 }
 
-.progress-step i {
-    display: block;
-    margin-bottom: 4px;
-    font-size: 0.8rem;
-}
+.progress-step i { display: block; margin-bottom: 4px; font-size: 0.8rem; }
 
 .progress-step.active {
     opacity: 1;
@@ -1479,9 +1308,7 @@ body {
     gap: 5px;
 }
 
-.progress-percent {
-    color: var(--text-secondary);
-}
+.progress-percent { color: var(--text-secondary); }
 
 /* Modal */
 .modal-overlay {
@@ -1521,9 +1348,7 @@ body {
     box-shadow: var(--shadow-card);
 }
 
-.modal-overlay.show .modal {
-    transform: scale(1);
-}
+.modal-overlay.show .modal { transform: scale(1); }
 
 .modal-header {
     display: flex;
@@ -1543,9 +1368,7 @@ body {
     gap: 10px;
 }
 
-.modal-title i {
-    color: var(--green-leaf);
-}
+.modal-title i { color: var(--green-leaf); }
 
 .modal-close {
     background: none;
@@ -1568,9 +1391,7 @@ body {
     transform: rotate(90deg);
 }
 
-.modal-body {
-    color: var(--text-secondary);
-}
+.modal-body { color: var(--text-secondary); }
 
 .vm-status-badge {
     display: inline-flex;
@@ -1602,9 +1423,7 @@ body {
     border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
-.info-section {
-    margin-bottom: 20px;
-}
+.info-section { margin-bottom: 20px; }
 
 .info-section-title {
     font-size: 0.7rem;
@@ -1624,9 +1443,7 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
-.info-row:last-child {
-    border-bottom: none;
-}
+.info-row:last-child { border-bottom: none; }
 
 .info-label {
     font-size: 0.75rem;
@@ -1636,10 +1453,7 @@ body {
     gap: 8px;
 }
 
-.info-label i {
-    color: var(--green-leaf);
-    width: 16px;
-}
+.info-label i { color: var(--green-leaf); width: 16px; }
 
 .info-value {
     font-family: monospace;
@@ -1762,10 +1576,7 @@ body {
     min-width: 280px;
 }
 
-.toast.show {
-    transform: translateX(0);
-}
-
+.toast.show { transform: translateX(0); }
 .toast-success { border-left-color: var(--green-moss); }
 .toast-success i { color: var(--green-moss); }
 .toast-error { border-left-color: #e08080; }
@@ -1791,9 +1602,150 @@ body {
     display: inline-block;
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============================================ */
+/* RATE LIMIT DISPLAY                           */
+/* ============================================ */
+
+.rate-limit-container {
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    background: rgba(20, 40, 25, 0.6);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    transition: var(--transition);
 }
+
+.rate-limit-container:hover {
+    background: rgba(25, 50, 35, 0.7);
+    border-color: var(--green-leaf);
+}
+
+.rate-limit-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.rate-limit-header i {
+    color: var(--green-moss);
+    font-size: 1.1rem;
+}
+
+.rate-limit-title {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.rate-limit-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.rate-limit-text {
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.rate-limit-text span {
+    color: var(--green-moss);
+    font-weight: 600;
+}
+
+.rate-limit-reset {
+    color: var(--text-muted);
+    font-size: 0.65rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.rate-limit-reset i {
+    font-size: 0.6rem;
+    color: var(--blue-water);
+}
+
+.rate-limit-bar {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    height: 6px;
+    overflow: hidden;
+    position: relative;
+}
+
+.rate-limit-fill {
+    background: linear-gradient(90deg, var(--green-leaf), var(--green-moss));
+    height: 100%;
+    width: 0%;
+    transition: width 0.4s ease;
+    border-radius: 10px;
+    position: relative;
+}
+
+.rate-limit-fill.warning {
+    background: linear-gradient(90deg, #d4af37, #e8c840);
+}
+
+.rate-limit-fill.danger {
+    background: linear-gradient(90deg, #c06060, #d47070);
+}
+
+.rate-limit-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    animation: shimmer 2s infinite;
+}
+
+.rate-limit-warning {
+    color: #d4af37;
+    font-size: 0.65rem;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.rate-limit-warning i {
+    font-size: 0.6rem;
+}
+
+/* ============================================ */
+/* PERFORMANCE OPTIMIZATIONS - 60FPS            */
+/* ============================================ */
+
+* { will-change: transform, opacity; }
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+.card, .spec-card, .vm-item, .modal {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+.fog-layer { will-change: transform; }
+.firefly { will-change: transform, opacity; }
+.clouds-layer, .sunrays-layer, .fog-layer, .firefly-container { pointer-events: none; }
 
 /* ============================================ */
 /* RESPONSIVE                                   */
