@@ -1,6 +1,7 @@
 /* ============================================ */
 /* NATURAL VPS - MAIN STYLESHEET                */
 /* Cinematic Nature 4K Theme                    */
+/* Version: 2.0 - Chill Edition                 */
 /* ============================================ */
 
 /* ----- CSS RESET ----- */
@@ -47,6 +48,7 @@
     /* Transitions */
     --transition: all 0.3s ease;
     --transition-fast: all 0.15s ease;
+    --transition-slow: all 0.6s ease;
     
     /* Fonts */
     --font-heading: 'Cormorant Garamond', serif;
@@ -95,40 +97,6 @@ body {
     pointer-events: none;
 }
 
-/* ----- ANIMATED ELEMENTS ----- */
-.leaf {
-    position: fixed;
-    pointer-events: none;
-    z-index: -1;
-    opacity: 0.06;
-    font-size: 28px;
-    animation: floatLeaf 15s infinite ease-in-out;
-}
-
-@keyframes floatLeaf {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    25% { transform: translateY(-35px) rotate(5deg); }
-    50% { transform: translateY(-55px) rotate(-5deg); }
-    75% { transform: translateY(-25px) rotate(3deg); }
-}
-
-.sunrays {
-    position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at 30% 40%, rgba(200, 180, 120, 0.04) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
-    animation: sunMove 30s infinite alternate ease-in-out;
-}
-
-@keyframes sunMove {
-    0% { transform: translate(0, 0) rotate(0deg); }
-    100% { transform: translate(5%, 5%) rotate(5deg); }
-}
-
 /* ----- CUSTOM SCROLLBAR ----- */
 ::-webkit-scrollbar {
     width: 6px;
@@ -159,6 +127,473 @@ body {
 }
 
 /* ============================================ */
+/* 🌿 NATURAL EFFECTS - BACKGROUND               */
+/* ============================================ */
+
+/* 1. Sương mù chuyển động */
+.fog-layer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(to top, 
+        rgba(140, 180, 130, 0.10) 0%,
+        rgba(120, 160, 110, 0.05) 40%,
+        transparent 100%);
+    pointer-events: none;
+    z-index: 6;
+    animation: fogBreath 20s infinite alternate ease-in-out;
+}
+
+.fog-layer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -10%;
+    width: 120%;
+    height: 100%;
+    background: radial-gradient(ellipse at 30% 80%, 
+        rgba(200, 230, 190, 0.08) 0%,
+        transparent 60%);
+    animation: fogDrift 35s infinite alternate ease-in-out;
+}
+
+.fog-layer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -10%;
+    width: 120%;
+    height: 100%;
+    background: radial-gradient(ellipse at 70% 90%, 
+        rgba(180, 210, 170, 0.06) 0%,
+        transparent 50%);
+    animation: fogDrift 28s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes fogBreath {
+    0% { transform: translateY(15px); opacity: 0.6; }
+    100% { transform: translateY(-10px); opacity: 1; }
+}
+
+@keyframes fogDrift {
+    0% { transform: translateX(-8%) scaleX(1); }
+    100% { transform: translateX(8%) scaleX(1.1); }
+}
+
+/* 2. Lá rơi theo gió */
+.leaf-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 7;
+    overflow: hidden;
+}
+
+.falling-leaf {
+    position: absolute;
+    color: rgba(100, 140, 80, 0.15);
+    font-size: 20px;
+    animation: leafFall linear infinite;
+}
+
+@keyframes leafFall {
+    0% {
+        transform: translateY(-10vh) translateX(-10vw) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.5;
+    }
+    90% {
+        opacity: 0.4;
+    }
+    100% {
+        transform: translateY(110vh) translateX(30vw) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* 3. Đom đóm bay */
+.firefly-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 8;
+}
+
+.firefly {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, #ffeaa0 0%, #ffd54f 50%, transparent 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 15px #ffeaa0, 0 0 30px rgba(255, 234, 160, 0.5);
+    animation: fireflyGlow 3s infinite alternate;
+}
+
+@keyframes fireflyGlow {
+    0% { opacity: 0.2; box-shadow: 0 0 8px #ffeaa0, 0 0 15px rgba(255, 234, 160, 0.3); }
+    100% { opacity: 0.9; box-shadow: 0 0 20px #ffeaa0, 0 0 40px rgba(255, 234, 160, 0.7); }
+}
+
+/* 4. Ánh nắng xuyên lá (God Rays) */
+.sunrays-layer {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 20%, 
+        rgba(255, 240, 180, 0.06) 0%,
+        rgba(200, 220, 150, 0.03) 30%,
+        transparent 70%);
+    pointer-events: none;
+    z-index: 5;
+    animation: sunMove 40s infinite alternate ease-in-out;
+    transform-origin: center;
+}
+
+@keyframes sunMove {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(8%, 5%) rotate(8deg); }
+}
+
+/* 5. Mây trôi chậm */
+.clouds-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 4;
+    opacity: 0.08;
+}
+
+.cloud {
+    position: absolute;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(200, 220, 200, 0.3) 100%);
+    border-radius: 100px;
+    filter: blur(15px);
+    animation: cloudDrift linear infinite;
+}
+
+.cloud-1 {
+    width: 300px;
+    height: 80px;
+    top: 15%;
+    animation-duration: 60s;
+}
+
+.cloud-2 {
+    width: 400px;
+    height: 100px;
+    top: 45%;
+    animation-duration: 80s;
+    animation-delay: -20s;
+}
+
+.cloud-3 {
+    width: 250px;
+    height: 60px;
+    top: 70%;
+    animation-duration: 70s;
+    animation-delay: -40s;
+}
+
+@keyframes cloudDrift {
+    0% { left: -400px; }
+    100% { left: 110%; }
+}
+
+/* 6. Chim bay ngang trời */
+.bird-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9;
+}
+
+.bird {
+    position: absolute;
+    color: rgba(60, 80, 50, 0.15);
+    font-size: 16px;
+    animation: birdFly linear infinite;
+}
+
+@keyframes birdFly {
+    0% { left: -50px; transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+    100% { left: 110%; transform: translateY(5px); }
+}
+
+/* 7. Sao băng (ban đêm) */
+.shooting-star {
+    position: fixed;
+    width: 2px;
+    height: 2px;
+    background: linear-gradient(90deg, #ffffff, #ffeaa0, transparent);
+    border-radius: 50%;
+    box-shadow: 0 0 20px #ffffff, 0 0 40px #ffeaa0;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+}
+
+.shooting-star::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #ffeaa0, #ffffff);
+    transform: translateX(-100%);
+}
+
+.shooting-star.animate {
+    animation: shootingStarAnim 1.5s ease-out forwards;
+}
+
+@keyframes shootingStarAnim {
+    0% { transform: translateX(0) translateY(0) rotate(-35deg); opacity: 0; }
+    5% { opacity: 1; }
+    30% { opacity: 1; }
+    100% { transform: translateX(-300px) translateY(200px) rotate(-35deg); opacity: 0; }
+}
+
+/* ============================================ */
+/* 🌿 INTERACTION EFFECTS                        */
+/* ============================================ */
+
+/* 8. Ripple nước khi click */
+.btn, .random-btn, .os-option, .vm-item, .modal-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(160, 200, 140, 0.4) 0%, transparent 70%);
+    transform: scale(0);
+    animation: waterRipple 0.8s ease-out forwards;
+    pointer-events: none;
+    z-index: 100;
+}
+
+@keyframes waterRipple {
+    0% { transform: scale(0); opacity: 0.6; }
+    100% { transform: scale(20); opacity: 0; }
+}
+
+/* 9. Lá rung khi hover */
+.fa-leaf, .fa-seedling, .fa-tree, .fa-forest {
+    transition: var(--transition-fast);
+    display: inline-block;
+}
+
+.fa-leaf:hover, .fa-seedling:hover, .fa-tree:hover, .fa-forest:hover,
+.btn:hover .fa-leaf, .btn:hover .fa-seedling, 
+.card-title:hover i, .logo:hover i {
+    animation: leafShake 0.5s ease-in-out;
+}
+
+@keyframes leafShake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-8deg); }
+    50% { transform: rotate(8deg); }
+    75% { transform: rotate(-4deg); }
+}
+
+/* 10. Glow tự nhiên cho input */
+.input-field:focus {
+    outline: none;
+    border-color: var(--green-leaf);
+    box-shadow: 0 0 0 3px rgba(74, 138, 62, 0.15),
+                0 0 20px rgba(100, 170, 80, 0.2);
+    background: rgba(15, 30, 20, 0.95);
+    transition: var(--transition);
+}
+
+/* 11. Card nở ra như hoa khi mở modal */
+.modal {
+    animation: flowerBloom 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes flowerBloom {
+    0% { transform: scale(0.3) rotate(-5deg); opacity: 0; }
+    50% { transform: scale(1.02) rotate(0deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* 12. Progress bar như dòng suối */
+.progress-fill {
+    background: linear-gradient(90deg, 
+        var(--green-dark) 0%, 
+        var(--green-leaf) 30%, 
+        var(--green-moss) 50%,
+        var(--blue-water) 70%,
+        var(--green-moss) 100%);
+    background-size: 200% 100%;
+    animation: streamFlow 3s linear infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.3), 
+        transparent);
+    animation: sparkleFlow 2s ease-in-out infinite;
+}
+
+@keyframes streamFlow {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 200% 0%; }
+}
+
+@keyframes sparkleFlow {
+    0% { left: -50%; }
+    100% { left: 150%; }
+}
+
+/* 13. Loading spinner thành bông hoa */
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: none;
+    position: relative;
+    animation: flowerSpin 2s linear infinite;
+}
+
+.spinner::before,
+.spinner::after {
+    content: '🌸';
+    position: absolute;
+    font-size: 16px;
+}
+
+.spinner::before {
+    animation: petalPulse 1s ease-in-out infinite;
+}
+
+.spinner::after {
+    animation: petalPulse 1s ease-in-out infinite 0.5s;
+}
+
+@keyframes flowerSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes petalPulse {
+    0%, 100% { opacity: 0.4; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* 14. Hiệu ứng hô hấp cho cây */
+@keyframes treeBreath {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+.logo i, .spec-icon i, .empty-icon i {
+    animation: treeBreath 4s ease-in-out infinite;
+}
+
+/* ============================================ */
+/* 🌿 ANIMATED ELEMENTS                          */
+/* ============================================ */
+
+/* 15. Toast mọc lên như cây */
+.toast {
+    animation: plantGrow 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    transform-origin: bottom left;
+}
+
+@keyframes plantGrow {
+    0% { transform: translateX(-400px) scale(0); opacity: 0; }
+    50% { transform: translateX(20px) scale(1.05); }
+    100% { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+/* 16. Parallax scrolling tự nhiên */
+.parallax-bg {
+    transition: transform 0.1s ease-out;
+}
+
+/* 17. VM item hover với hiệu ứng lá */
+.vm-item {
+    position: relative;
+}
+
+.vm-item::before {
+    content: '🍃';
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: var(--transition);
+    font-size: 16px;
+}
+
+.vm-item:hover::before {
+    opacity: 0.6;
+    left: -5px;
+}
+
+/* 18. Hoa nở khi hover card */
+.card {
+    position: relative;
+}
+
+.card::after {
+    content: '🌼';
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    opacity: 0;
+    font-size: 20px;
+    transition: var(--transition);
+    transform: scale(0);
+}
+
+.card:hover::after {
+    opacity: 0.15;
+    transform: scale(1);
+}
+
+/* 19. Status dot breathing */
+.vm-status-dot.running {
+    animation: statusBreath 2s ease-in-out infinite;
+}
+
+@keyframes statusBreath {
+    0%, 100% { opacity: 0.6; box-shadow: 0 0 5px var(--green-moss); }
+    50% { opacity: 1; box-shadow: 0 0 15px var(--green-moss), 0 0 25px rgba(106, 170, 90, 0.3); }
+}
+
+/* ============================================ */
 /* AUTHENTICATION STYLES                        */
 /* ============================================ */
 
@@ -186,14 +621,8 @@ body {
 }
 
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .auth-logo {
@@ -364,7 +793,7 @@ body {
     display: block;
 }
 
-/* ----- USER MENU ----- */
+/* User Menu */
 .user-menu {
     position: fixed;
     top: 20px;
@@ -419,7 +848,7 @@ body {
     transform: translateY(-1px);
 }
 
-/* ----- HEADER ----- */
+/* Header */
 .header {
     text-align: center;
     margin-bottom: 25px;
@@ -437,14 +866,8 @@ body {
 }
 
 @keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .header::before {
@@ -489,7 +912,7 @@ body {
     font-weight: 300;
 }
 
-/* ----- SPECS GRID ----- */
+/* Specs Grid */
 .specs-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -552,14 +975,14 @@ body {
     margin-top: 4px;
 }
 
-/* ----- TWO COLUMNS LAYOUT ----- */
+/* Two Columns */
 .two-columns {
     display: grid;
     grid-template-columns: 1fr 1.3fr;
     gap: 22px;
 }
 
-/* ----- CARDS ----- */
+/* Cards */
 .card {
     background: var(--glass-bg);
     backdrop-filter: blur(15px);
@@ -596,7 +1019,7 @@ body {
     font-size: 1.2rem;
 }
 
-/* ----- FORM ELEMENTS ----- */
+/* Form Elements */
 .input-group {
     margin-bottom: 18px;
 }
@@ -650,7 +1073,7 @@ body {
     margin-bottom: 0;
 }
 
-/* ----- OS SELECTOR ----- */
+/* OS Selector */
 .os-selector {
     display: flex;
     gap: 12px;
@@ -697,7 +1120,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* ----- RANDOM BUTTON ----- */
+/* Random Button */
 .random-btn {
     background: rgba(74, 138, 62, 0.12);
     border: 1px solid var(--glass-border);
@@ -720,7 +1143,7 @@ body {
     border-color: var(--green-leaf);
 }
 
-/* ----- BUTTONS ----- */
+/* Buttons */
 .btn {
     padding: 14px 22px;
     border-radius: var(--radius-md);
@@ -775,7 +1198,7 @@ body {
     cursor: not-allowed;
 }
 
-/* ----- STATS BAR ----- */
+/* Stats Bar */
 .stats-bar {
     display: flex;
     gap: 12px;
@@ -815,7 +1238,7 @@ body {
     text-transform: uppercase;
 }
 
-/* ----- VM LIST ----- */
+/* VM List */
 .vm-list {
     display: flex;
     flex-direction: column;
@@ -838,14 +1261,8 @@ body {
 }
 
 @keyframes fadeInItem {
-    from {
-        opacity: 0;
-        transform: translateX(-15px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    from { opacity: 0; transform: translateX(-15px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
 .vm-item:hover {
@@ -912,22 +1329,17 @@ body {
 .vm-status-dot.running {
     background: var(--green-moss);
     box-shadow: 0 0 8px var(--green-moss);
-    animation: pulse 1.5s infinite;
+    animation: statusBreath 1.5s infinite;
 }
 
 .vm-status-dot.creating {
     background: #d4af37;
     box-shadow: 0 0 8px #d4af37;
-    animation: pulse 1s infinite;
+    animation: statusBreath 1s infinite;
 }
 
 .vm-status-dot.expired {
     background: var(--text-muted);
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
 }
 
 .vm-status-text {
@@ -951,7 +1363,7 @@ body {
     transform: translateX(3px);
 }
 
-/* ----- EMPTY STATE ----- */
+/* Empty State */
 .empty-state {
     text-align: center;
     padding: 45px 25px;
@@ -963,7 +1375,7 @@ body {
     margin-bottom: 15px;
     opacity: 0.5;
     color: var(--green-leaf);
-    animation: floatLeaf 4s infinite ease-in-out;
+    animation: treeBreath 4s infinite ease-in-out;
 }
 
 .empty-state p {
@@ -975,10 +1387,7 @@ body {
     opacity: 0.7;
 }
 
-/* ============================================ */
-/* PROGRESS CONTAINER                           */
-/* ============================================ */
-
+/* Progress Container */
 .progress-container {
     margin-top: 20px;
     display: none;
@@ -986,14 +1395,8 @@ body {
 }
 
 @keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-15px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-15px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .progress-steps {
@@ -1062,22 +1465,6 @@ body {
     position: relative;
 }
 
-.progress-fill::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    animation: shimmer 2s infinite;
-}
-
-@keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-
 .progress-detail {
     display: flex;
     justify-content: space-between;
@@ -1096,10 +1483,7 @@ body {
     color: var(--text-secondary);
 }
 
-/* ============================================ */
-/* MODAL STYLES                                 */
-/* ============================================ */
-
+/* Modal */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -1350,10 +1734,7 @@ body {
     color: #e08080;
 }
 
-/* ============================================ */
-/* TOAST NOTIFICATIONS                          */
-/* ============================================ */
-
+/* Toast */
 .toast-container {
     position: fixed;
     bottom: 20px;
@@ -1385,66 +1766,24 @@ body {
     transform: translateX(0);
 }
 
-.toast-success {
-    border-left-color: var(--green-moss);
-}
+.toast-success { border-left-color: var(--green-moss); }
+.toast-success i { color: var(--green-moss); }
+.toast-error { border-left-color: #e08080; }
+.toast-error i { color: #e08080; }
+.toast-warning { border-left-color: #d4af37; }
+.toast-warning i { color: #d4af37; }
+.toast-info { border-left-color: var(--blue-water); }
+.toast-info i { color: var(--blue-water); }
 
-.toast-success i {
-    color: var(--green-moss);
-}
+.toast i { font-size: 1.2rem; }
+.toast-message { flex: 1; font-size: 0.85rem; color: var(--text-primary); }
+.toast-close { cursor: pointer; opacity: 0.5; transition: var(--transition-fast); font-size: 1rem; }
+.toast-close:hover { opacity: 1; }
 
-.toast-error {
-    border-left-color: #e08080;
-}
-
-.toast-error i {
-    color: #e08080;
-}
-
-.toast-warning {
-    border-left-color: #d4af37;
-}
-
-.toast-warning i {
-    color: #d4af37;
-}
-
-.toast-info {
-    border-left-color: var(--blue-water);
-}
-
-.toast-info i {
-    color: var(--blue-water);
-}
-
-.toast i {
-    font-size: 1.2rem;
-}
-
-.toast-message {
-    flex: 1;
-    font-size: 0.85rem;
-    color: var(--text-primary);
-}
-
-.toast-close {
-    cursor: pointer;
-    opacity: 0.5;
-    transition: var(--transition-fast);
-    font-size: 1rem;
-}
-
-.toast-close:hover {
-    opacity: 1;
-}
-
-/* ============================================ */
-/* SPINNER                                      */
-/* ============================================ */
-
+/* Spinner */
 .spinner {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     border: 2px solid rgba(255, 255, 255, 0.1);
     border-top-color: var(--green-moss);
     border-radius: 50%;
@@ -1457,86 +1796,34 @@ body {
 }
 
 /* ============================================ */
-/* RESPONSIVE STYLES                            */
+/* RESPONSIVE                                   */
 /* ============================================ */
 
 @media (max-width: 1200px) {
-    .specs-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
+    .specs-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 1000px) {
-    .two-columns {
-        grid-template-columns: 1fr;
-    }
+    .two-columns { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
-    .specs-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .container {
-        padding: 12px;
-    }
-    
-    .card {
-        padding: 18px;
-    }
-    
-    .logo {
-        font-size: 2.2rem;
-    }
-    
-    .header {
-        padding: 18px 12px;
-        margin-top: 60px;
-    }
-    
-    .user-menu {
-        top: 10px;
-        right: 10px;
-        padding: 6px 10px 6px 14px;
-    }
-    
-    .user-name {
-        display: none;
-    }
-    
-    .toast {
-        min-width: auto;
-        max-width: 280px;
-    }
-    
-    .modal {
-        padding: 20px;
-    }
+    .specs-grid { grid-template-columns: repeat(2, 1fr); }
+    .container { padding: 12px; }
+    .card { padding: 18px; }
+    .logo { font-size: 2.2rem; }
+    .header { padding: 18px 12px; margin-top: 60px; }
+    .user-menu { top: 10px; right: 10px; padding: 6px 10px 6px 14px; }
+    .user-name { display: none; }
+    .toast { min-width: auto; max-width: 280px; }
+    .modal { padding: 20px; }
 }
 
 @media (max-width: 480px) {
-    .specs-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .os-selector {
-        flex-direction: column;
-    }
-    
-    .input-row {
-        flex-direction: column;
-    }
-    
-    .random-btn {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .auth-card {
-        padding: 25px 18px;
-    }
-    
-    .stats-bar {
-        flex-direction: column;
-    }
+    .specs-grid { grid-template-columns: 1fr; }
+    .os-selector { flex-direction: column; }
+    .input-row { flex-direction: column; }
+    .random-btn { width: 100%; justify-content: center; }
+    .auth-card { padding: 25px 18px; }
+    .stats-bar { flex-direction: column; }
 }
