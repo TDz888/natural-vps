@@ -142,6 +142,30 @@
                         <i class="fas fa-seedling"></i>
                         Plant a New Virtual Machine
                     </div>
+                    <!-- Rate Limit Display -->
+<div class="rate-limit-container" id="rateLimitContainer" style="display: none;">
+    <div class="rate-limit-header">
+        <i class="fas fa-tachometer-alt"></i>
+        <span class="rate-limit-title">Rate Limit (3 hours)</span>
+    </div>
+    <div class="rate-limit-stats">
+        <span class="rate-limit-text">
+            <i class="fas fa-server"></i> 
+            <span id="rateLimitUsed">0</span>/<span id="rateLimitTotal">5</span> VMs used
+        </span>
+        <span class="rate-limit-reset" id="rateLimitReset">
+            <i class="fas fa-hourglass-half"></i>
+            <span id="rateLimitTime">--:--:--</span>
+        </span>
+    </div>
+    <div class="rate-limit-bar">
+        <div class="rate-limit-fill" id="rateLimitFill" style="width: 0%;"></div>
+    </div>
+    <div class="rate-limit-warning" id="rateLimitWarning" style="display: none;">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>Limit almost reached!</span>
+    </div>
+</div>
                     
                     <div class="input-group">
                         <label class="input-label"><i class="fab fa-github"></i> GitHub Token</label>
