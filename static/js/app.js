@@ -1,5 +1,7 @@
 /* ============================================ */
 /* NATURAL VPS - MAIN JAVASCRIPT                */
+/* Cinematic Nature 4K - Chill Edition          */
+/* Version: 2.0                                 */
 /* ============================================ */
 
 // ----- CONFIGURATION -----
@@ -58,6 +60,172 @@ const DOM = {
     modalVmName: document.getElementById('modalVmName'),
     modalVmBody: document.getElementById('modalVmBody')
 };
+
+// ============================================ */
+// 🌿 NATURAL EFFECTS - INITIALIZATION           */
+// ============================================ */
+
+function initNaturalEffects() {
+    createFogLayer();
+    createCloudsLayer();
+    createFallingLeaves();
+    createFireflies();
+    createSunraysLayer();
+    startBirdAnimation();
+    initRippleEffect();
+    initParallaxEffect();
+    initShootingStars();
+}
+
+function createFogLayer() {
+    const fog = document.createElement('div');
+    fog.className = 'fog-layer';
+    document.body.appendChild(fog);
+}
+
+function createCloudsLayer() {
+    const clouds = document.createElement('div');
+    clouds.className = 'clouds-layer';
+    clouds.innerHTML = `
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+    `;
+    document.body.appendChild(clouds);
+}
+
+function createFallingLeaves() {
+    const container = document.createElement('div');
+    container.className = 'leaf-container';
+    document.body.appendChild(container);
+    
+    const leafIcons = ['🍃', '🍂', '🌿', '🍁'];
+    
+    function spawnLeaf() {
+        const leaf = document.createElement('div');
+        leaf.className = 'falling-leaf';
+        leaf.textContent = leafIcons[Math.floor(Math.random() * leafIcons.length)];
+        leaf.style.left = Math.random() * 100 + '%';
+        leaf.style.animationDuration = (8 + Math.random() * 10) + 's';
+        leaf.style.animationDelay = Math.random() * 5 + 's';
+        leaf.style.fontSize = (16 + Math.random() * 20) + 'px';
+        container.appendChild(leaf);
+        
+        setTimeout(() => leaf.remove(), 20000);
+    }
+    
+    for (let i = 0; i < 8; i++) {
+        setTimeout(spawnLeaf, i * 300);
+    }
+    setInterval(spawnLeaf, 3000);
+}
+
+function createFireflies() {
+    const container = document.createElement('div');
+    container.className = 'firefly-container';
+    document.body.appendChild(container);
+    
+    for (let i = 0; i < 20; i++) {
+        const firefly = document.createElement('div');
+        firefly.className = 'firefly';
+        firefly.style.left = Math.random() * 100 + '%';
+        firefly.style.top = Math.random() * 100 + '%';
+        firefly.style.animationDelay = Math.random() * 3 + 's';
+        firefly.style.animationDuration = (2 + Math.random() * 4) + 's';
+        container.appendChild(firefly);
+        
+        animateFirefly(firefly);
+    }
+}
+
+function animateFirefly(firefly) {
+    function move() {
+        const newX = parseFloat(firefly.style.left) + (Math.random() - 0.5) * 15;
+        const newY = parseFloat(firefly.style.top) + (Math.random() - 0.5) * 15;
+        
+        firefly.style.left = Math.min(100, Math.max(0, newX)) + '%';
+        firefly.style.top = Math.min(100, Math.max(0, newY)) + '%';
+        firefly.style.transition = 'all ' + (3 + Math.random() * 5) + 's ease-in-out';
+        
+        setTimeout(move, 4000 + Math.random() * 6000);
+    }
+    move();
+}
+
+function createSunraysLayer() {
+    const sunrays = document.createElement('div');
+    sunrays.className = 'sunrays-layer';
+    document.body.appendChild(sunrays);
+}
+
+function startBirdAnimation() {
+    const container = document.createElement('div');
+    container.className = 'bird-container';
+    document.body.appendChild(container);
+    
+    function spawnBird() {
+        const bird = document.createElement('div');
+        bird.className = 'bird';
+        bird.innerHTML = '🕊️';
+        bird.style.top = (10 + Math.random() * 30) + '%';
+        bird.style.animationDuration = (15 + Math.random() * 20) + 's';
+        container.appendChild(bird);
+        
+        setTimeout(() => bird.remove(), 40000);
+    }
+    
+    setInterval(spawnBird, 45000);
+    setTimeout(spawnBird, 5000);
+}
+
+function initRippleEffect() {
+    document.addEventListener('click', function(e) {
+        const target = e.target.closest('.btn, .random-btn, .os-option, .vm-item, .modal-btn');
+        if (!target) return;
+        
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple-effect';
+        
+        const rect = target.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+        ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+        
+        target.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 800);
+    });
+}
+
+function initParallaxEffect() {
+    document.addEventListener('mousemove', function(e) {
+        const moveX = (e.clientX - window.innerWidth / 2) / 50;
+        const moveY = (e.clientY - window.innerHeight / 2) / 50;
+        
+        document.querySelectorAll('.spec-card, .card').forEach(el => {
+            el.style.transform = `translate(${moveX * 0.2}px, ${moveY * 0.2}px)`;
+        });
+    });
+}
+
+function initShootingStars() {
+    function createShootingStar() {
+        const star = document.createElement('div');
+        star.className = 'shooting-star';
+        star.style.top = Math.random() * 30 + '%';
+        star.style.left = Math.random() * 50 + 50 + '%';
+        document.body.appendChild(star);
+        
+        setTimeout(() => star.classList.add('animate'), 100);
+        setTimeout(() => star.remove(), 2000);
+    }
+    
+    setInterval(() => {
+        if (Math.random() > 0.7) {
+            createShootingStar();
+        }
+    }, 8000);
+}
 
 // ============================================ */
 // UTILITY FUNCTIONS                           */
@@ -459,7 +627,7 @@ async function createVM() {
     }
     
     DOM.createBtn.disabled = true;
-    DOM.createBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Planting...';
+    DOM.createBtn.innerHTML = '<span class="spinner"></span> Planting...';
     
     DOM.progressContainer.style.display = 'block';
     updateProgressUI(0, 2, '🔐 Initializing...');
@@ -514,7 +682,6 @@ async function showVmModal(vmId) {
     
     DOM.modalVmName.innerHTML = `<i class="fas fa-leaf"></i><span>${vm.name || vmId}</span>`;
     
-    // Check live status
     let isLive = false;
     try {
         const res = await fetch(`${API_BASE}/api/vps/${vmId}/check`);
@@ -705,18 +872,15 @@ function deleteVMFromModal(vmId) {
 // ============================================ */
 
 function setupEventListeners() {
-    // Tab switching
     document.querySelectorAll('.auth-tab').forEach(tab => {
         tab.addEventListener('click', () => switchTab(tab.dataset.tab));
     });
     
-    // Login form
     DOM.loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         await login(DOM.loginUsername.value.trim(), DOM.loginPassword.value, DOM.rememberMe.checked);
     });
     
-    // Register form
     DOM.registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         await register(
@@ -726,20 +890,15 @@ function setupEventListeners() {
         );
     });
     
-    // Logout
     DOM.logoutBtn.addEventListener('click', logout);
-    
-    // Create VM
     DOM.createBtn.addEventListener('click', createVM);
     
-    // Refresh
     DOM.refreshBtn.addEventListener('click', () => {
         loadVMs();
         loadStats();
         showToast('Forest refreshed', 'info');
     });
     
-    // Generate buttons
     document.getElementById('randomUserBtn').addEventListener('click', () => {
         DOM.vmUsername.value = generateUsername();
     });
@@ -748,14 +907,12 @@ function setupEventListeners() {
         DOM.vmPassword.value = generatePassword();
     });
     
-    // Modal close
     DOM.vmModal.addEventListener('click', (e) => {
         if (e.target.classList.contains('modal-overlay')) {
             closeVmModal();
         }
     });
     
-    // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeVmModal();
@@ -768,21 +925,19 @@ function setupEventListeners() {
 // ============================================ */
 
 async function init() {
-    // Set initial values
+    initNaturalEffects();
+    
     DOM.vmUsername.value = generateUsername();
     DOM.vmPassword.value = generatePassword();
     
-    // Setup event listeners
     setupEventListeners();
     
-    // Check authentication
     const isLoggedIn = await checkAuth();
     
     if (!isLoggedIn) {
         DOM.authContainer.style.display = 'flex';
     }
     
-    // Auto refresh every 30 seconds
     setInterval(() => {
         if (currentUser) {
             loadVMs();
@@ -791,10 +946,8 @@ async function init() {
     }, 30000);
 }
 
-// Start the app
 document.addEventListener('DOMContentLoaded', init);
 
-// Expose functions to global scope
 window.showVmModal = showVmModal;
 window.closeVmModal = closeVmModal;
 window.copyText = copyText;
