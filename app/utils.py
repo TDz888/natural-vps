@@ -9,51 +9,45 @@ import string
 import hashlib
 import bcrypt
 import jwt
+import socket
+import requests
+import time
 from datetime import datetime, timedelta
 from flask import request, g
 from functools import wraps
 from app.config import Config
-from app.database import db
 
 def get_client_ip():
-    """Get client IP address"""
     if request.headers.get('X-Forwarded-For'):
         return request.headers.get('X-Forwarded-For').split(',')[0].strip()
     return request.remote_addr or '0.0.0.0'
 
 def hash_ip(ip):
-    """Hash IP address for privacy"""
     return hashlib.sha256(f"{ip}_{Config.SECRET_KEY}".encode()).hexdigest()[:32]
 
 def generate_id(length=8):
-    """Generate random ID"""
     alphabet = string.ascii_lowercase + string.digits
     return ''.join(secrets.choice(alphabet) for _ in range(length))
 
 def generate_username():
-    """Generate random username"""
     prefixes = ['forest', 'leaf', 'river', 'stone', 'wind', 'sun', 'moss', 'pine']
     return f"{secrets.choice(prefixes)}_{generate_id(6)}"
 
 def generate_password(length=16):
-    """Generate random password"""
     chars = string.ascii_letters + string.digits + "!@#$%^&*"
     return ''.join(secrets.choice(chars) for _ in range(length))
 
 def hash_password(password):
-    """Hash password with bcrypt"""
     salt = bcrypt.gensalt(rounds=Config.BCRYPT_ROUNDS)
     return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
 
 def verify_password(password, hashed):
-    """Verify password against hash"""
     try:
         return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
     except:
         return False
 
 def generate_tokens(user_id):
-    """Generate JWT access and refresh tokens"""
     access_payload = {
         'user_id': user_id,
         'type': 'access',
@@ -71,7 +65,6 @@ def generate_tokens(user_id):
     return access_token, refresh_token
 
 def verify_token(token, token_type='access'):
-    """Verify JWT token"""
     try:
         payload = jwt.decode(token, Config.JWT_SECRET, algorithms=['HS256'])
         if payload.get('type') != token_type:
@@ -82,42 +75,66 @@ def verify_token(token, token_type='access'):
     except jwt.InvalidTokenError:
         return False, "Invalid token"
 
-def require_auth(f):
-    """Decorator to require authentication"""
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
+def validate_github_token(token):
+    try:
+        headers = {
+            'Authorization': f'token {token}',
+            'Accept': 'application/vnd.github.v3+json',
+            'User-Agent': 'NaturalVPS/3.0'
+        }
+        resp = requests.get('https://api.github.com/user', headers=headers, timeout=10)
         
-        # Check Authorization header
-        auth_header = request.headers.get('Authorization')
-        if auth_header and auth_header.startswith('Bearer '):
-            token = auth_header[7:]
+        if resp.status_code != 200:
+            if resp.status_code == 401:
+                return False, "Invalid GitHub token - Unauthorized"
+            return False, f"GitHub API error: {resp.status_code}"
         
-        # Check cookie
-        if not token:
-            token = request.cookies.get('access_token')
+        user_data = resp.json()
+        scopes = resp.headers.get('X-OAuth-Scopes', '')
         
-        if not token:
-            return {'success': False, 'error': 'Authentication required'}, 401
+        if 'repo' not in scopes:
+            return False, "Token missing 'repo' scope"
+        if 'workflow' not in scopes:
+            return False, "Token missing 'workflow' scope"
         
-        valid, payload = verify_token(token, 'access')
-        if not valid:
-            return {'success': False, 'error': payload}, 401
-        
-        g.user_id = payload['user_id']
-        return f(*args, **kwargs)
-    return decorated
+        return True, {'username': user_data.get('login'), 'scopes': scopes}
+    except requests.exceptions.Timeout:
+        return False, "GitHub API timeout"
+    except Exception as e:
+        return False, f"Validation error: {str(e)}"
 
-def validate_username(username):
-    """Validate username format"""
+def check_port_open(host, port, timeout=3):
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(timeout)
+        result = sock.connect_ex((host, port))
+        sock.close()
+        return result == 0
+    except:
+        return False
+
+def retry_with_backoff(func, max_retries=3, base_delay=1):
+    for attempt in range(max_retries):
+        try:
+            result, error = func()
+            if error is None:
+                return result, None
+            if attempt < max_retries - 1:
+                time.sleep(base_delay * (2 ** attempt))
+        except Exception as e:
+            if attempt == max_retries - 1:
+                return None, str(e)
+            time.sleep(base_delay * (2 ** attempt))
+    return None, "Max retries exceeded"
+
+def validate_username_format(username):
     if not username or len(username) < 3 or len(username) > 30:
         return False, "Username must be 3-30 characters"
     if not re.match(r'^[a-zA-Z0-9_]+$', username):
         return False, "Username can only contain letters, numbers, and underscores"
     return True, None
 
-def validate_password(password):
-    """Validate password strength"""
+def validate_password_strength(password):
     if len(password) < 8:
         return False, "Password must be at least 8 characters"
     if not re.search(r'[A-Z]', password):
@@ -126,10 +143,4 @@ def validate_password(password):
         return False, "Password must contain lowercase letter"
     if not re.search(r'[0-9]', password):
         return False, "Password must contain number"
-    return True, None
-
-def validate_email(email):
-    """Validate email format"""
-    if email and not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
-        return False, "Invalid email format"
     return True, None
