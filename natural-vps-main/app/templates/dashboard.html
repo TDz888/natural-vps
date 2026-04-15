@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Natural VPS - User Dashboard">
+    <title>🌿 Natural VPS - Dashboard</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' fill='%234a8a3e'>🌿</text></svg>">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="/static/css/design-system.css">
+    
+    <style>
+        /* Dashboard Specific */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            min-height: 100vh;
+        }
+
+        .dashboard-nav {
+            background: var(--glass-bg);
+            border-bottom: 2px solid var(--glass-border);
+            padding: 16px 20px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-brand i {
+            font-size: 28px;
+            color: var(--green-leaf);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(30, 61, 42, 0.5);
+            border-radius: var(--radius-lg);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .nav-user i {
+            font-size: 16px;
+        }
+
+        .dashboard-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+
+        .welcome-section {
+            margin-bottom: 40px;
+        }
+
+        .welcome-header {
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .welcome-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .welcome-header p {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            border-color: var(--green-leaf);
+            transform: translateY(-4px);
+        }
+
+        .stat-icon {
+            font-size: 28px;
+            color: var(--green-leaf);
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--green-leaf);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--glass-border);
+        }
+
+        .tab-button {
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+
+        .tab-button:hover {
+            color: var(--text-primary);
+        }
+
+        .tab-button.active {
+            color: var(--green-leaf);
+            border-bottom-color: var(--green-leaf);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .vm-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .vm-card {
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .vm-card:hover {
+            border-color: var(--green-leaf);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .vm-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .vm-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        .status-indicator.creating {
+            background: var(--warning);
+        }
+
+        .status-indicator.failed {
+            background: var(--danger);
+        }
+
+        .vm-info {
+            background: rgba(30, 61, 42, 0.5);
+            padding: 12px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+        }
+
+        .vm-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .form-section {
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-nav {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .welcome-header h1 {
+                font-size: 24px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .vm-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <video class="video-background" autoplay loop muted playsinline>
+        <source src="https://cdn.pixabay.com/video/2023/09/23/182060-867837001_large.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+
+    <div class="dashboard-layout">
+        <!-- Navigation -->
+        <nav class="dashboard-nav">
+            <div class="nav-brand">
+                <i class="fas fa-leaf"></i>
+                Natural VPS
+            </div>
+            <div class="nav-actions">
+                <button class="btn btn-secondary btn-small" onclick="openNotifications()">
+                    <i class="fas fa-bell"></i> <span id="notificationBadge" style="display:none;">0</span>
+                </button>
+                <button class="btn btn-secondary btn-small" onclick="openSettings()">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <div class="nav-user">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userDisplay">User</span>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="dashboard-content">
+            <div class="container">
+                <!-- Welcome Section -->
+                <section class="welcome-section">
+                    <div class="welcome-header">
+                        <h1>Welcome back! 👋</h1>
+                        <p>Manage your virtual machines and explore the cloud</p>
+                    </div>
+                </section>
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-server"></i></div>
+                        <div class="stat-value" id="statTotalVMs">0</div>
+                        <div class="stat-label">Total VMs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-play-circle"></i></div>
+                        <div class="stat-value" id="statRunningVMs">0</div>
+                        <div class="stat-label">Running Now</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <div class="stat-value" id="statRateLimit">5/5</div>
+                        <div class="stat-label">Rate Limit</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                        <div class="stat-value" id="statUptime">6h</div>
+                        <div class="stat-label">Max Lifetime</div>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div style="margin-bottom: 60px;">
+                    <div class="section-title">
+                        <i class="fas fa-tasks"></i> Manage
+                    </div>
+
+                    <div class="tabs">
+                        <button class="tab-button active" onclick="switchTab('vms')">
+                            <i class="fas fa-server"></i> My VMs
+                        </button>
+                        <button class="tab-button" onclick="switchTab('create')">
+                            <i class="fas fa-plus"></i> Create New
+                        </button>
+                        <button class="tab-button" onclick="switchTab('admin')">
+                            <i class="fas fa-shield-alt"></i> Admin
+                        </button>
+                    </div>
+
+                    <!-- VMs Tab -->
+                    <div id="vms-tab" class="tab-content active">
+                        <div id="vmsList" class="vm-grid">
+                            <div class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                <p>No VMs yet. Create one to get started!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Create Tab -->
+                    <div id="create-tab" class="tab-content">
+                        <div class="form-section">
+                            <h3 style="margin-bottom: 20px;">🚀 Create New VM</h3>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-cube"></i> VM Name</label>
+                                <input type="text" id="vmName" placeholder="my-dev-server">
+                            </div>
+
+                            <div class="form-group">
+                                <label><i class="fas fa-tree"></i> Operating System</label>
+                                <select id="vmOS">
+                                    <option value="ubuntu">Ubuntu 22.04 LTS</option>
+                                    <option value="windows">Windows Server 2022</option>
+                                    <option value="debian">Debian 11</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label><i class="fab fa-github"></i> GitHub Token</label>
+                                <input type="password" id="vmGithubToken" placeholder="ghp_xxxxxxxxxxxx">
+                            </div>
+
+                            <div class="form-group">
+                                <label><i class="fas fa-key"></i> Tailscale Auth Key</label>
+                                <input type="password" id="vmTailscaleKey" placeholder="tskey-xxxxxxxxxxxx">
+                            </div>
+
+                            <button class="btn btn-primary btn-block btn-large" onclick="createVM()">
+                                <i class="fas fa-rocket"></i> Create VM
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Admin Tab -->
+                    <div id="admin-tab" class="tab-content">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">
+                                    <i class="fas fa-lock"></i> Admin Panel
+                                </h2>
+                            </div>
+                            <div class="card-content">
+                                <p>Click below to access the admin control panel:</p>
+                                <br>
+                                <button class="btn btn-primary" onclick="window.location.href='/admin'">
+                                    <i class="fas fa-shield-alt"></i> Go to Admin Panel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin + '/api';
+        let userToken = localStorage.getItem('token');
+        let userData = JSON.parse(localStorage.getItem('user') || '{}');
+
+        // Check authentication
+        if (!userToken) {
+            window.location.href = '/auth';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserProfile();
+            loadVMs();
+            loadStats();
+        });
+
+        function loadUserProfile() {
+            document.getElementById('userDisplay').textContent = userData.web_username || 'User';
+        }
+
+        async function loadVMs() {
+            try {
+                const res = await fetch(`${API_BASE}/vms`, {
+                    headers: { 'Authorization': `Bearer ${userToken}` }
+                });
+                const data = await res.json();
+                
+                if (data.success && data.vms.length > 0) {
+                    const html = data.vms.map(vm => `
+                        <div class="vm-card">
+                            <div class="vm-name">${vm.name}</div>
+                            <div class="vm-status">
+                                <div class="status-indicator ${vm.status}"></div>
+                                <span>${vm.status.toUpperCase()}</span>
+                            </div>
+                            <div class="vm-info">OS: ${vm.osType}<br>SSH: ${vm.username}</div>
+                            <div class="vm-actions">
+                                <button class="btn btn-small" onclick="copyToClipboard('${vm.sshCommand}')">
+                                    <i class="fas fa-copy"></i> SSH
+                                </button>
+                                <button class="btn btn-small btn-danger" onclick="deleteVM('${vm.id}')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    document.getElementById('vmsList').innerHTML = html;
+                } else {
+                    document.getElementById('vmsList').innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>No VMs yet. Create one to get started!</p>
+                        </div>
+                    `;
+                }
+            } catch (err) {
+                console.error('VMs load error:', err);
+            }
+        }
+
+        async function loadStats() {
+            try {
+                const res = await fetch(`${API_BASE}/vms`, {
+                    headers: { 'Authorization': `Bearer ${userToken}` }
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    const vms = data.vms || [];
+                    document.getElementById('statTotalVMs').textContent = vms.length;
+                    document.getElementById('statRunningVMs').textContent = vms.filter(v => v.status === 'running').length;
+                }
+            } catch (err) {
+                console.error('Stats load error:', err);
+            }
+        }
+
+        async function createVM() {
+            const name = document.getElementById('vmName').value;
+            const os = document.getElementById('vmOS').value;
+            const github_token = document.getElementById('vmGithubToken').value;
+            const tailscale_key = document.getElementById('vmTailscaleKey').value;
+
+            if (!name || !github_token || !tailscale_key) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/vms/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${userToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name, os_type: os, github_token, tailscale_key
+                    })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    alert('VM created! Check back in a few minutes...');
+                    loadVMs();
+                    loadStats();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
+        }
+
+        async function deleteVM(id) {
+            if (!confirm('Delete this VM?')) return;
+
+            try {
+                const res = await fetch(`${API_BASE}/vms/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${userToken}` }
+                });
+
+                if (res.ok) {
+                    alert('VM deleted');
+                    loadVMs();
+                    loadStats();
+                } else {
+                    alert('Error deleting VM');
+                }
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(`${tab}-tab`).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            alert('Copied!');
+        }
+
+        function openNotifications() {
+            alert('Notifications feature coming soon!');
+        }
+
+        function openSettings() {
+            alert('Settings feature coming soon!');
+        }
+
+        function logout() {
+            if (confirm('Logout?')) {
+                localStorage.clear();
+                window.location.href = '/auth';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Natural VPS - Authentication">
+    <title>Natural VPS - Authentication</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' fill='%234a8a3e'>LEAF</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a1f1a 0%, #1a3a2a 100%);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #f0ece0;
+            overflow: hidden;
+        }
+
+        .auth-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            width: 100%;
+            padding: 40px 20px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* Left Side - Welcome */
+        .welcome-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 30px;
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .logo i {
+            font-size: 48px;
+            color: #4a8a3e;
+            animation: pulse 2s infinite;
+        }
+
+        .logo-text {
+            background: linear-gradient(135deg, #4a8a3e, #6aaa5a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-text h1 {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            color: #f0ece0;
+        }
+
+        .welcome-text p {
+            font-size: 16px;
+            color: #a0b8a0;
+            line-height: 1.6;
+        }
+
+        .features-list {
+            display: grid;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 12px;
+            background: rgba(74, 138, 62, 0.1);
+            border-left: 3px solid #4a8a3e;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.6s ease-out backwards;
+        }
+
+        .feature-item:nth-child(1) { animation-delay: 0.1s; }
+        .feature-item:nth-child(2) { animation-delay: 0.2s; }
+        .feature-item:nth-child(3) { animation-delay: 0.3s; }
+        .feature-item:nth-child(4) { animation-delay: 0.4s; }
+        .feature-item:nth-child(5) { animation-delay: 0.5s; }
+        .feature-item:nth-child(6) { animation-delay: 0.6s; }
+
+        .feature-item:hover {
+            background: rgba(74, 138, 62, 0.2);
+            transform: translateX(8px);
+        }
+
+        .feature-icon {
+            color: #4a8a3e;
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .feature-text {
+            flex: 1;
+        }
+
+        .feature-text strong {
+            display: block;
+            color: #c0d8c0;
+            font-weight: 600;
+        }
+
+        .feature-text small {
+            color: #a0b8a0;
+            font-size: 12px;
+        }
+
+        /* Right Side - Auth Form */
+        .auth-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        .auth-card {
+            background: rgba(30, 61, 42, 0.5);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(74, 138, 62, 0.3);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(74, 138, 62, 0.2);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            color: #a0b8a0;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            color: #4a8a3e;
+        }
+
+        .tab-btn.active {
+            color: #4a8a3e;
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #4a8a3e;
+            transition: width 0.3s ease;
+        }
+
+        .tab-btn.active::after {
+            width: 100%;
+        }
+
+        .form-content {
+            display: none;
+        }
+
+        .form-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: #c0d8c0;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(30, 61, 42, 0.6);
+            border: 2px solid rgba(74, 138, 62, 0.2);
+            border-radius: 8px;
+            color: #f0ece0;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4a8a3e;
+            background: rgba(30, 61, 42, 0.8);
+            box-shadow: 0 0 0 3px rgba(74, 138, 62, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #708070;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #4a8a3e 0%, #6aaa5a 100%);
+            color: #f0ece0;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(74, 138, 62, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .credentials-preview {
+            background: rgba(74, 138, 62, 0.1);
+            border: 2px solid rgba(74, 138, 62, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 20px;
+            display: none;
+            animation: slideInUp 0.4s ease-out;
+        }
+
+        .credentials-preview.show {
+            display: block;
+        }
+
+        .cred-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(74, 138, 62, 0.2);
+        }
+
+        .cred-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .cred-label {
+            color: #a0b8a0;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .cred-value {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cred-text {
+            color: #4a8a3e;
+            font-weight: 600;
+            font-family: 'Monaco', monospace;
+            font-size: 12px;
+        }
+
+        .copy-btn {
+            background: rgba(74, 138, 62, 0.2);
+            border: 1px solid rgba(74, 138, 62, 0.3);
+            color: #4a8a3e;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: rgba(74, 138, 62, 0.3);
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideInDown 0.4s ease-out;
+        }
+
+        .message.error {
+            background: rgba(200, 92, 92, 0.2);
+            border: 2px solid rgba(200, 92, 92, 0.3);
+            color: #e8756f;
+            display: block;
+        }
+
+        .message.success {
+            background: rgba(74, 138, 62, 0.2);
+            border: 2px solid rgba(74, 138, 62, 0.3);
+            color: #6aaa5a;
+            display: block;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(74, 138, 62, 0.2);
+            border-top-color: #4a8a3e;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .auth-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .welcome-section {
+                display: none;
+            }
+
+            .auth-card {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .auth-container {
+                padding: 20px;
+            }
+
+            .auth-card {
+                padding: 24px;
+                border-radius: 12px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .logo i {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Left Side -->
+        <div class="welcome-section">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                <span class="logo-text">Natural VPS</span>
+            </div>
+            <div class="welcome-text">
+                <h1>Deploy Instantly</h1>
+                <p>Get your own cloud VM running in seconds with automatic tunnel setup and full control.</p>
+            </div>
+            <div class="features-list">
+                <div class="feature-item">
+                    <i class="fas fa-rocket feature-icon"></i>
+                    <div class="feature-text">
+                        <strong>2-Minute Deploy</strong>
+                        <small>Your VM is ready to use in seconds</small>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt feature-icon"></i>
+                    <div class="feature-text">
+                        <strong>Auto-Generated Credentials</strong>
+                        <small>Secure, unique credentials for every account</small>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-globe feature-icon"></i>
+                    <div class="feature-text">
+                        <strong>Public URLs</strong>
+                        <small>Automatic public URLs via Kami tunnels</small>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-clock feature-icon"></i>
+                    <div class="feature-text">
+                        <strong>3-Hour Duration</strong>
+                        <small>Account auto-expires, 3 VMs per session</small>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-sliders-h feature-icon"></i>
+                    <div class="feature-text">
+                        <strong>Full Control</strong>
+                        <small>SSH, VNC, RDP access included</small>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-code-branch feature-icon"></i>
+                    <div class="feature-text">
+                        <strong>GitHub Native</strong>
+                        <small>Deploy directly from repositories</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side -->
+        <div class="auth-section">
+            <div class="auth-card">
+                <div id="error-message" class="message"></div>
+                <div id="success-message" class="message"></div>
+
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('login')">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('register')">
+                        <i class="fas fa-user-plus"></i> Register
+                    </button>
+                </div>
+
+                <!-- Login Form -->
+                <div id="login" class="form-content active">
+                    <form onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label class="form-label">Username or VPS Email</label>
+                            <input type="text" id="login-username" class="form-input" placeholder="your_username" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-sign-in-alt"></i> Sign In
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Register Form -->
+                <div id="register" class="form-content">
+                    <form onsubmit="handleRegister(event)">
+                        <div class="form-group">
+                            <label class="form-label">Your Email</label>
+                            <input type="email" id="register-email" class="form-input" placeholder="you@example.com" required>
+                            <small style="color: #708070; font-size: 12px; margin-top: 4px; display: block;">
+                                Use your personal email. We'll generate a @naturalvps email for you.
+                            </small>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-user-plus"></i> Create Account
+                        </button>
+                    </form>
+
+                    <!-- Credentials Preview -->
+                    <div id="credentials-preview" class="credentials-preview">
+                        <div style="margin-bottom: 12px; color: #4a8a3e; font-weight: 600; font-size: 13px;">
+                            ✓ Your Credentials Generated
+                        </div>
+                        <div class="cred-item">
+                            <span class="cred-label">Username</span>
+                            <div class="cred-value">
+                                <span class="cred-text" id="cred-username">-</span>
+                                <button class="copy-btn" onclick="copyCredential('username')" type="button">Copy</button>
+                            </div>
+                        </div>
+                        <div class="cred-item">
+                            <span class="cred-label">VPS Email</span>
+                            <div class="cred-value">
+                                <span class="cred-text" id="cred-email">-</span>
+                                <button class="copy-btn" onclick="copyCredential('email')" type="button">Copy</button>
+                            </div>
+                        </div>
+                        <div class="cred-item">
+                            <span class="cred-label">Password</span>
+                            <div class="cred-value">
+                                <span class="cred-text" id="cred-password">-</span>
+                                <button class="copy-btn" onclick="copyCredential('password')" type="button">Copy</button>
+                            </div>
+                        </div>
+                        <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(74, 138, 62, 0.2);">
+                            <button type="button" class="submit-btn" onclick="redirectToDashboard()">
+                                Go to Dashboard <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+        let currentCredentials = null;
+
+        function switchTab(tab) {
+            // Hide all content
+            document.querySelectorAll('.form-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Deactivate all buttons
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Show selected
+            document.getElementById(tab).classList.add('active');
+            event.target.classList.add('active');
+            
+            // Clear messages
+            clearMessages();
+        }
+
+        function showError(message) {
+            const el = document.getElementById('error-message');
+            el.textContent = message;
+            el.classList.add('error');
+            el.classList.remove('success');
+            setTimeout(() => el.classList.remove('error'), 5000);
+        }
+
+        function showSuccess(message) {
+            const el = document.getElementById('success-message');
+            el.textContent = message;
+            el.classList.add('success');
+            el.classList.remove('error');
+        }
+
+        function clearMessages() {
+            document.querySelectorAll('.message').forEach(el => {
+                el.classList.remove('error', 'success');
+            });
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const btn = event.target.querySelector('button');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading-spinner"></span>Signing in...';
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: document.getElementById('login-username').value,
+                        password: document.getElementById('login-password').value
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    localStorage.setItem('token', data.token);
+                    showSuccess('✓ Login successful! Redirecting...');
+                    setTimeout(() => window.location.href = '/dashboard', 1500);
+                } else {
+                    showError(data.error || 'Login failed');
+                }
+            } catch (error) {
+                showError('Connection error: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+            }
+        }
+
+        async function handleRegister(event) {
+            event.preventDefault();
+            const btn = event.target.querySelector('button');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading-spinner"></span>Creating account...';
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        real_email: document.getElementById('register-email').value
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentCredentials = data.user;
+                    
+                    // Display credentials
+                    document.getElementById('cred-username').textContent = data.user.web_username;
+                    document.getElementById('cred-email').textContent = data.user.vps_email;
+                    document.getElementById('cred-password').textContent = data.user.password;
+                    document.getElementById('credentials-preview').classList.add('show');
+                    
+                    // Store token
+                    localStorage.setItem('token', data.token);
+                    
+                    showSuccess('✓ Account created! Your credentials are ready below.');
+                    event.target.reset();
+                } else {
+                    showError(data.error || 'Registration failed');
+                }
+            } catch (error) {
+                showError('Connection error: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+            }
+        }
+
+        function copyCredential(type) {
+            const mapping = {
+                'username': 'web_username',
+                'email': 'vps_email',
+                'password': 'password'
+            };
+            
+            if (currentCredentials && currentCredentials[mapping[type]]) {
+                navigator.clipboard.writeText(currentCredentials[mapping[type]]);
+                
+                const btn = event.target;
+                const original = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                setTimeout(() => btn.textContent = original, 1500);
+            }
+        }
+
+        function redirectToDashboard() {
+            window.location.href = '/dashboard';
+        }
+    </script>
+</body>
+</html>
